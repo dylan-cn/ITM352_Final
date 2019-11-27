@@ -1,12 +1,22 @@
 import React from 'react';
+import { BrowserRouter as Router, Switch } from 'react-router-dom';
 import './App.css';
-// import { Button, Modal, Backdrop, Fade } from '@material-ui/core';
-import SignUp from './components/login';
+import { CssBaseline } from '@material-ui/core';
+import Register from './components/register';
+import TopNav from './components/topnav';
 
 function App() {
   return (
     <div className="App">
-      <SignUp/>
+      <CssBaseline />
+      <TopNav />
+      <Router>
+        <Switch>
+          <Router exact path='/register'>
+            <Register />
+          </Router>
+        </Switch>
+      </Router>
     </div >
   );
 }
