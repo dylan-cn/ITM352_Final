@@ -14,7 +14,9 @@ router.post('/register', (req, res) => {
     if (!firstName || !lastName || !username || !password || !passwordConfirm || !email) {
         return res.status(400).json({
             success: false,
-            message: ['All fields must be entered']
+            messages: {
+                general: 'All fields must be entered'
+            }
         });
     }
 
@@ -27,7 +29,7 @@ router.post('/register', (req, res) => {
     email = email.trim();
 
     let success = false;
-    let messages = [];
+    let messages = {};
 
     // Username and email are unique... so find if any
     // of thos exist in database
@@ -45,23 +47,22 @@ router.post('/register', (req, res) => {
             // User or email exists
             if (existingUser) {
                 if (existingUser.email === email) {
-                    messages.push('E-mail is already in use!');
+                    messages.email = 'E-mail is already in use!';
                 } else {
-                    messages.push('Username already exists!');
+                    messages.username = 'Username already exists!';
                 }
             } else {
                 // Validation
                 if (password !== passwordConfirm) {
-                    messages.push('Passwords do not match');
+                    messages.password = 'Passwords do not match';
                 }
 
                 if (!emailRegex.test(email)) {
-                    messages.push('Email format is invalid');
+                    messages.email = 'Email format is invalid';
                 }
 
-                // If no messages have been added at this point,
-                // it means that it is ok to begin account creation
-                if (messages.length === 0) {
+                // If object is empty at this point, then there were no errors
+                if (Object.keys(messages).length === 0 && messages.constructor === Object) {
                     try {
                         // Salt and hash the password
                         const salt = bcrypt.genSaltSync(10);
@@ -70,9 +71,8 @@ router.post('/register', (req, res) => {
                         newUser.password = hash;
 
                         success = true;
-                        messages.push('Successfully created account');
                     } catch (err) {
-                        messages.push("Error creating account: password");
+                        messages.general = "Error creating account: password";
                     }
                 }
             }
@@ -86,10 +86,13 @@ router.post('/register', (req, res) => {
                         if (err) {
                             return res.status(500).json({
                                 success: false,
-                                messages: [err]
+                                messages: {
+                                    general: err
+                                }
                             });
                         }
 
+                        messages.general = 'Successfully created account';
                         return res.status(200).json({
                             success,
                             messages,
@@ -105,7 +108,9 @@ router.post('/register', (req, res) => {
                 }).catch(err => {
                     return res.status(500).json({
                         success,
-                        messages: ['Catastrophic error trying to save account to database']
+                        messages: {
+                            general: 'Catastrophic error trying to save account to database'
+                        } 
                     });
                 });
             } else {
@@ -118,7 +123,9 @@ router.post('/register', (req, res) => {
         .catch(err => {
             return res.status(500).json({
                 success,
-                messages: ['Catastrophic error trying to create account']
+                messages: {
+                    general: 'Catastrophic error trying to create account'
+                }
             });
         });
 });
