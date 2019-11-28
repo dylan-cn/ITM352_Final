@@ -10,10 +10,6 @@ const useStyles = makeStyles(theme => ({
     flexDirection: 'column',
     alignItems: 'center',
   },
-  avatar: {
-    margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main,
-  },
   form: {
     width: '100%', // Fix IE 11 issue.
     marginTop: theme.spacing(3),
@@ -27,13 +23,6 @@ const useStyles = makeStyles(theme => ({
     left: '50%',
     marginTop: -12,
     marginLeft: -12,
-  },
-  largeSpinner: {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    marginTop: -32,
-    marginLeft: -32,
   },
   wrapper: {
     margin: theme.spacing(1),
@@ -283,16 +272,6 @@ export default function Register({ updateAuth }) {
     );
   }
 
-  const loading = () => {
-    return (
-      <Container className={classes.paper}>
-        <div className={classes.largeSpinner}>
-          <CircularProgress size={64} />
-        </div>
-      </Container>
-    );
-  }
-
   //return success ? registerSuccess() : register();
-  return (loadingUser) ? loading() : success ? registerSuccess() : register();
+  return success ? registerSuccess() : register();
 }
