@@ -1,16 +1,16 @@
 import React from 'react';
-import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import './App.css';
-import { CssBaseline } from '@material-ui/core';
+import { CssBaseline, CircularProgress, Container } from '@material-ui/core';
+import { withStyles } from '@material-ui/core/styles';
 import { PrivateRoute } from './helper/PrivateRoute';
 import { LoggedInRoute } from './helper/LoggedInRoute';
-import Register from './components/register';
+import Register from './pages/register';
 import TopNav from './components/topnav';
-import Test from './components/test';
-import Login from './components/login';
+import Test from './pages/test';
+import Login from './pages/login';
 import Home from './pages/home';
-import { withStyles } from '@material-ui/core/styles';
-import { CircularProgress, Container } from '@material-ui/core';
+
 
 const useStyles = theme => ({
   paper: {
@@ -79,6 +79,7 @@ class App extends React.Component {
     }
   }
 
+  // Verify the user on mount
   componentDidMount() {
     this.setState({ loadingUser: true });
     // simulate a long request
@@ -87,8 +88,16 @@ class App extends React.Component {
     }, 1000);
   }
 
+  // Allow child components to update auth status
   updateAuth = (status) => {
+    const getUser = window.localStorage.getItem('user');
+    const user = JSON.parse(getUser);
     this.setState({ auth: status });
+    this.setState({
+      user: {
+        ...user
+      }
+    });
   }
 
   render() {

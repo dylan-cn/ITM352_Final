@@ -1,18 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import IconButton from '@material-ui/core/IconButton';
-import Typography from '@material-ui/core/Typography';
-import Badge from '@material-ui/core/Badge';
-import MenuItem from '@material-ui/core/MenuItem';
-import Menu from '@material-ui/core/Menu';
-import MenuIcon from '@material-ui/icons/Menu';
-import AccountCircle from '@material-ui/icons/AccountCircle';
+import { AccountCircle } from '@material-ui/icons';
 import MailIcon from '@material-ui/icons/Mail';
 import MoreIcon from '@material-ui/icons/MoreVert';
-import { Button } from '@material-ui/core';
+import { Button, AppBar, Toolbar, IconButton, Typography, Badge, MenuItem, Menu } from '@material-ui/core';
 
 const useStyles = makeStyles(theme => ({
     grow: {
@@ -77,8 +69,7 @@ export default function TopNav({ isAuth, user }) {
             open={isMenuOpen}
             onClose={handleMenuClose}
         >
-            <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-            <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+            <MenuItem onClick={handleMenuClose}>Logout</MenuItem>
         </Menu>
     );
 
@@ -122,39 +113,34 @@ export default function TopNav({ isAuth, user }) {
         <div className={classes.grow}>
             <AppBar position="static">
                 <Toolbar>
-                    <IconButton
-                        edge="start"
-                        className={classes.menuButton}
-                        color="inherit"
-                        aria-label="open drawer"
-                    >
-                        <MenuIcon />
-                    </IconButton>
                     <Typography className={classes.title} variant="h6" noWrap>
                         Event Planner
                     </Typography>
                     <div className={classes.grow} />
-                    <Typography className={classes.title} variant="h6" noWrap>
-                        Hello, {`${user.firstName} ${user.lastName}`}
-                    </Typography>
+                    {isAuth && user ?
+                        <Typography className={classes.title} variant="h6" noWrap>
+                            Hello, {`${user.firstName} ${user.lastName}`}
+                        </Typography>
+                        :
+                        null
+                    }
                     <div className={classes.sectionDesktop}>
                         {isAuth ?
-                            null
+                            <IconButton
+                                edge="end"
+                                aria-label="account of current user"
+                                aria-controls={menuId}
+                                aria-haspopup="true"
+                                onClick={handleProfileMenuOpen}
+                                color="inherit"
+                            >
+                                <AccountCircle />
+                            </IconButton>
                             :
                             <>
-                                <Button component={Link} to="/login">Login</Button>
                                 <Button component={Link} to="/Register">Register</Button>
+                                <Button component={Link} to="/login">Login</Button>
                             </>}
-                        <IconButton
-                            edge="end"
-                            aria-label="account of current user"
-                            aria-controls={menuId}
-                            aria-haspopup="true"
-                            onClick={handleProfileMenuOpen}
-                            color="inherit"
-                        >
-                            <AccountCircle />
-                        </IconButton>
                     </div>
                     <div className={classes.sectionMobile}>
                         <IconButton

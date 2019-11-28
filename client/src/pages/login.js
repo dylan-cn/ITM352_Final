@@ -1,13 +1,7 @@
 import React from 'react';
 import { Redirect, Link } from 'react-router-dom';
-import Button from '@material-ui/core/Button';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import TextField from '@material-ui/core/TextField';
-import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
+import { CssBaseline, Button, TextField, Grid, Typography, Container, CircularProgress } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
-import Container from '@material-ui/core/Container';
-import CircularProgress from '@material-ui/core/CircularProgress';
 
 const useStyles = theme => ({
     paper: {
@@ -117,7 +111,7 @@ class Login extends React.Component {
                 <CssBaseline />
                 <div className={classes.paper}>
                     <Typography component="h1" variant="h5">
-                        Sign up
+                        Login
                 </Typography>
                     <form className={classes.form} noValidate onSubmit={this.sendLoginRequest}>
                         <Grid container spacing={2}>
@@ -155,7 +149,7 @@ class Login extends React.Component {
                                 disabled={this.state.isLoading}
                                 className={classes.submit}
                             >
-                                Sign Up
+                                Login
                         </Button>
                             {this.state.isLoading &&
                                 <div className={classes.spinner}>
@@ -164,7 +158,7 @@ class Login extends React.Component {
                         </div>
                         <Grid container justify="flex-end">
                             <Grid item>
-                                <Link to='/login'>
+                                <Link to='/register'>
                                     Don't have an account? Register
                             </Link>
                             </Grid>
