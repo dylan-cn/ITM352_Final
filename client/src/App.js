@@ -73,6 +73,9 @@ class App extends React.Component {
           this.setState({ loadingUser: false });
         })
 
+    } else {
+      this.setState({ auth: false });
+      this.setState({ loadingUser: false });
     }
   }
 
@@ -82,6 +85,10 @@ class App extends React.Component {
     setTimeout(() => {
       this.processUser();
     }, 1000);
+  }
+
+  updateAuth = (status) => {
+    this.setState({ auth: status });
   }
 
   render() {
@@ -101,13 +108,13 @@ class App extends React.Component {
       <div className="App" >
         <CssBaseline />
         <Router>
-          <TopNav isAuth={this.state.auth} />
+          <TopNav isAuth={this.state.auth} user={this.state.user} />
           <Switch>
             {/* {this.state.auth ? <PrivateRoute exact path='/test' isAuth={this.state.auth} component={Test} /> : null} */}
             {/* <PrivateRoute exact path='/test' auth={this.state.auth} component={Test} /> */}
             <PrivateRoute path={"/test"} component={Test} isAuthenticated={this.state.auth} isLoading={this.state.loadingUser} />
-            <LoggedInRoute exact path='/register' isAuth={this.state.auth} component={Register} />
-            <LoggedInRoute exact path='/login' isAuth={this.state.auth} component={Login} />
+            <LoggedInRoute exact path='/register' display={!this.state.auth && !this.state.loadingUser} isAuthenticated={this.state.auth} updateAuth={this.updateAuth} component={Register} />
+            <LoggedInRoute exact path='/login' display={!this.state.auth && !this.state.loadingUser} isAuthenticated={this.state.auth} updateAuth={this.updateAuth} component={Login} />
             <Route exact path='/' component={Home} />
           </Switch>
         </Router>

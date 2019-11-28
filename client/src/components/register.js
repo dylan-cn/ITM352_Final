@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { Redirect } from 'react-router-dom';
-import { Button, TextField, Link, Grid, Typography, Container, CircularProgress } from '@material-ui/core';
+import React, { useState } from 'react';
+import { Redirect, Link } from 'react-router-dom';
+import { Button, TextField, Grid, Typography, Container, CircularProgress } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles(theme => ({
@@ -42,7 +42,7 @@ const useStyles = makeStyles(theme => ({
 
 }));
 
-export default function Register() {
+export default function Register({ updateAuth }) {
   const classes = useStyles();
   // Fetching state
   const [isLoading, setIsLoading] = useState(false);
@@ -55,33 +55,6 @@ export default function Register() {
   // const [username, setUsernameError] = useState('');
   // const [email, setEmailError] = useState('');
   // const [password, setPasswordError] = useState('');
-
-  // useEffect(() => {
-  //   const getUser = window.localStorage.getItem('user');
-  //   const user = JSON.parse(getUser);
-  //   if (user !== null) {
-  //     setLoadingUser(true);
-  //     // Send request to verify token
-  //     fetch('/api/auth/verify', {
-  //       method: 'POST',
-  //       headers: {
-  //         'x-auth-token': user.token
-  //       },
-  //     })
-  //       .then(res => res.json())
-  //       .then(json => {
-  //         if (json.success) {
-  //           console.log("verified token");
-  //         }
-  //       })
-  //       .catch(err => {
-
-  //       })
-  //       .finally(() => {
-  //         setLoadingUser(false);
-  //       });
-  //   }
-  // }, []);
 
   const amtOfTime = 5000;
   function setDelay(startTime) {
@@ -126,6 +99,7 @@ export default function Register() {
       passwordConfirm: form.passwordConfirm.value
     };
 
+    let localSuccess = false;
     // Send request to register
     fetch('/api/users/register', {
       method: 'POST',
@@ -149,22 +123,24 @@ export default function Register() {
           // Stringify the object
           window.localStorage.setItem('user', JSON.stringify(user));
           setSuccess(true);
+          localSuccess = true;
         }
 
-        setDelay(new Date());
+        // setDelay(new Date());
         // Save messages
         setMessages(json.messages);
       })
       .catch(err => {
-
+        console.log(err);
       })
       .finally(() => {
         setIsLoading(false);
+        if (localSuccess) {
+          updateAuth(true);
+        } else {
+          updateAuth(false);
+        }
       });
-  }
-
-  async function stall(stallTime = 3000) {
-    await new Promise(resolve => setTimeout(resolve, stallTime));
   }
 
   const register = () => {
@@ -282,7 +258,7 @@ export default function Register() {
             </div>
             <Grid container justify="flex-end">
               <Grid item>
-                <Link href="#" variant="body2">
+                <Link to='/login'>
                   Already have an account? Sign in
                 </Link>
               </Grid>
@@ -300,7 +276,7 @@ export default function Register() {
           <div className={classes.paper}>
             <Typography component="h1" variant="h5">
               {messages.general}
-              {`You will be redirected to homepage in ${redirect} seconds.`}
+              {/* {`You will be redirected to homepage in ${redirect} seconds.`} */}
             </Typography>
           </div>
         </Container>

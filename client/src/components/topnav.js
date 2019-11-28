@@ -41,7 +41,7 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-export default function TopNav(isAuth) {
+export default function TopNav({ isAuth, user }) {
     const classes = useStyles();
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
@@ -134,16 +134,17 @@ export default function TopNav(isAuth) {
                         Event Planner
                     </Typography>
                     <div className={classes.grow} />
+                    <Typography className={classes.title} variant="h6" noWrap>
+                        Hello, {`${user.firstName} ${user.lastName}`}
+                    </Typography>
                     <div className={classes.sectionDesktop}>
-                        <IconButton aria-label="show 4 new mails" color="inherit">
-                            <Badge badgeContent={4} color="secondary">
-                                <MailIcon />
-                            </Badge>
-                        </IconButton>
-
-                        <Button component={Link} to="/login">Login</Button>
-
-
+                        {isAuth ?
+                            null
+                            :
+                            <>
+                                <Button component={Link} to="/login">Login</Button>
+                                <Button component={Link} to="/Register">Register</Button>
+                            </>}
                         <IconButton
                             edge="end"
                             aria-label="account of current user"
