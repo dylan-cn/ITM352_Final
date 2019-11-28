@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
 import './App.css';
 import { CssBaseline } from '@material-ui/core';
 import { PrivateRoute } from './helper/PrivateRoute';
@@ -8,6 +8,7 @@ import Register from './components/register';
 import TopNav from './components/topnav';
 import Test from './components/test';
 import Login from './components/login';
+import Home from './pages/home';
 import { withStyles } from '@material-ui/core/styles';
 import { CircularProgress, Container } from '@material-ui/core';
 
@@ -33,48 +34,54 @@ class App extends React.Component {
 
     this.state = {
       auth: false,
-      loadingUser: false
+      loadingUser: true,
+      user: {}
     }
   }
 
   // try to authenticate the user on app start
   processUser = () => {
-    console.log("trying to verify user");
     const getUser = window.localStorage.getItem('user');
     const user = JSON.parse(getUser);
     if (user !== null) {
-      this.setState({ loadingUser: true });
-
-      setTimeout(() => {
-        // Send request to verify token
-        fetch('/api/auth/verify', {
-          method: 'POST',
-          headers: {
-            'x-auth-token': user.token
-          },
+      // Send request to verify token
+      fetch('/api/auth/verify', {
+        method: 'POST',
+        headers: {
+          'x-auth-token': user.token
+        },
+      })
+        .then(res => res.json())
+        .then(json => {
+          if (json.success) {
+            this.setState({ auth: true });
+            this.setState({
+              user: {
+                ...user
+              }
+            });
+          } else {
+            window.localStorage.removeItem('user');
+            this.setState({ auth: false });
+            this.setState({ user: {} });
+          }
         })
-          .then(res => res.json())
-          .then(json => {
-            if (json.success) {
-              console.log("verified user");
-              this.setState({ auth: true });
-            } else {
-              window.localStorage.removeItem('user');
-              this.setState({ auth: false });
-            }
+        .catch(err => {
+          console.log(err);
+        })
+        .finally(() => {
+          this.setState({ loadingUser: false });
+        })
 
-            console.log("not loading user");
-            this.setState({ loadingUser: false });
-          })
-          .catch(err => {
-            console.log(err);
-          })
-      }, 1000);
     }
   }
 
   componentDidMount() {
-    this.processUser();
+    this.setState({ loadingUser: true });
+    // simulate a long request
+    setTimeout(() => {
+      this.processUser();
+    }, 1000);
   }
 
   render() {
@@ -93,12 +100,15 @@ class App extends React.Component {
     return (
       <div className="App" >
         <CssBaseline />
-        <TopNav />
         <Router>
+          <TopNav isAuth={this.state.auth} />
           <Switch>
-            {this.state.auth ? <PrivateRoute exact path='/test' isAuth={this.state.auth} component={Test} /> : null}
+            {/* {this.state.auth ? <PrivateRoute exact path='/test' isAuth={this.state.auth} component={Test} /> : null} */}
+            {/* <PrivateRoute exact path='/test' auth={this.state.auth} component={Test} /> */}
+            <PrivateRoute path={"/test"} component={Test} isAuthenticated={this.state.auth} isLoading={this.state.loadingUser} />
             <LoggedInRoute exact path='/register' isAuth={this.state.auth} component={Register} />
             <LoggedInRoute exact path='/login' isAuth={this.state.auth} component={Login} />
+            <Route exact path='/' component={Home} />
           </Switch>
         </Router>
       </div >

@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -10,8 +11,8 @@ import Menu from '@material-ui/core/Menu';
 import MenuIcon from '@material-ui/icons/Menu';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import MailIcon from '@material-ui/icons/Mail';
-import NotificationsIcon from '@material-ui/icons/Notifications';
 import MoreIcon from '@material-ui/icons/MoreVert';
+import { Button } from '@material-ui/core';
 
 const useStyles = makeStyles(theme => ({
     grow: {
@@ -40,7 +41,7 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-export default function TopNav() {
+export default function TopNav(isAuth) {
     const classes = useStyles();
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
@@ -101,12 +102,7 @@ export default function TopNav() {
                 <p>Messages</p>
             </MenuItem>
             <MenuItem>
-                <IconButton aria-label="show 11 new notifications" color="inherit">
-                    <Badge badgeContent={11} color="secondary">
-                        <NotificationsIcon />
-                    </Badge>
-                </IconButton>
-                <p>Notifications</p>
+                <Button component={Link} to='/login'>Login</Button>
             </MenuItem>
             <MenuItem onClick={handleProfileMenuOpen}>
                 <IconButton
@@ -144,11 +140,10 @@ export default function TopNav() {
                                 <MailIcon />
                             </Badge>
                         </IconButton>
-                        <IconButton aria-label="show 17 new notifications" color="inherit">
-                            <Badge badgeContent={17} color="secondary">
-                                <NotificationsIcon />
-                            </Badge>
-                        </IconButton>
+
+                        <Button component={Link} to="/login">Login</Button>
+
+
                         <IconButton
                             edge="end"
                             aria-label="account of current user"
