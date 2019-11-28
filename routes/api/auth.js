@@ -70,5 +70,30 @@ router.post('/', (req, res) => {
         });
 });
 
+router.post('/verify', (req, res) => {
+    const token = req.headers['x-auth-token'];
+
+    // try to decode token
+    if (token) {
+        try {
+            const decoded = jwt.verify(token, jwtSecret);
+            res.json({
+                success: true,
+                message: 'Token is validated'
+            })
+        } catch (err) {
+            res.status(400).json({
+                success: false,
+                message: 'Bad token'
+            });
+        }
+    } else {
+        res.status(401).json({
+            success: false,
+            message: 'No token provided'
+        })
+    }
+});
+
 
 module.exports = router;

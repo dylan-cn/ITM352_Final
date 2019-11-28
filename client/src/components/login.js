@@ -1,14 +1,16 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { Redirect } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
 import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = theme => ({
     paper: {
         marginTop: theme.spacing(8),
         display: 'flex',
@@ -26,110 +28,146 @@ const useStyles = makeStyles(theme => ({
     submit: {
         margin: theme.spacing(3, 0, 2),
     },
-}));
+    spinner: {
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        marginTop: -12,
+        marginLeft: -12,
+    },
+    wrapper: {
+        margin: theme.spacing(1),
+        position: 'relative',
+    },
+});
 
-async function sendLoginRequest(userInfo) {
-    const res = await fetch('/auth', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(userInfo)
-    });
+class Login extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            isLoading: false,
+            loggedIn: false
+        };
 
-    const json = await res.json();
-    return json;
-}
+        this.sendLoginRequest = this.sendLoginRequest.bind(this);
+    }
 
-export default function SignUp() {
-    const classes = useStyles();
+    // Send post to login user
+    async sendLoginRequest(e) {
+        // Prevent the form from submitting
+        e.preventDefault();
 
-    return (
-        <Container component="main" maxWidth="xs">
-            <CssBaseline />
-            <div className={classes.paper}>
-                <Typography component="h1" variant="h5">
-                    Sign up
+        // Set loading state
+        this.setState({ isLoading: true });
+
+        let form = e.target;
+        let userInfo = {
+            username: form.username.value,
+            password: form.password.value,
+        };
+
+        // Send request to register
+        fetch('/api/auth', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(userInfo)
+        })
+            .then(res => res.json())
+            .then(json => {
+                // Registration was a success
+                if (json.success) {
+                    // Create user to be added to local storage
+                    const user = {
+                        ...json.user,
+                        token: json.token
+                    };
+
+                    // Save user into local storage upon account creation
+                    // Stringify the object
+                    window.localStorage.setItem('user', JSON.stringify(user));
+                    this.setState({ loggedIn: true });
+                }
+            })
+            .catch(err => {
+
+            })
+            .finally(() => {
+                this.setState({ isLoading: false });
+            });
+    }
+
+    render() {
+        const { classes } = this.props;
+        const { from } = this.props.location.state || { from: { pathname: '/' } };
+
+        if (this.state.loggedIn && !this.state.isLoading) {
+            return <Redirect to={from} />
+        }
+
+        return (
+            <Container component="main" maxWidth="xs">
+                <CssBaseline />
+                <div className={classes.paper}>
+                    <Typography component="h1" variant="h5">
+                        Sign up
                 </Typography>
-                <form className={classes.form} noValidate>
-                    <Grid container spacing={2}>
-                        <Grid item xs={12} sm={6}>
-                            <TextField
-                                autoComplete="fname"
-                                name="firstName"
-                                variant="outlined"
-                                required
+                    <form className={classes.form} noValidate onSubmit={this.sendLoginRequest}>
+                        <Grid container spacing={2}>
+                            <Grid item xs={12}>
+                                <TextField
+                                    autoComplete="username"
+                                    name="username"
+                                    variant="outlined"
+                                    required
+                                    fullWidth
+                                    id="username"
+                                    label="Username"
+                                    autoFocus
+                                />
+                            </Grid>
+                            <Grid item xs={12}>
+                                <TextField
+                                    variant="outlined"
+                                    required
+                                    fullWidth
+                                    id="password"
+                                    label="Password"
+                                    name="password"
+                                    autoComplete="password"
+                                    type="password"
+                                />
+                            </Grid>
+                        </Grid>
+                        <div className={classes.wrapper}>
+                            <Button
+                                type="submit"
                                 fullWidth
-                                id="firstName"
-                                label="First Name"
-                                autoFocus
-                            />
+                                variant="contained"
+                                color="primary"
+                                disabled={this.state.isLoading}
+                                className={classes.submit}
+                            >
+                                Sign Up
+                        </Button>
+                            {this.state.isLoading &&
+                                <div className={classes.spinner}>
+                                    <CircularProgress size={24} />
+                                </div>}
+                        </div>
+                        <Grid container justify="flex-end">
+                            <Grid item>
+                                <Link href="#" variant="body2">
+                                    Don't have an account? Register
+                            </Link>
+                            </Grid>
                         </Grid>
-                        <Grid item xs={12} sm={6}>
-                            <TextField
-                                variant="outlined"
-                                required
-                                fullWidth
-                                id="lastName"
-                                label="Last Name"
-                                name="lastName"
-                                autoComplete="lname"
-                            />
-                        </Grid>
-                        <Grid item xs={12}>
-                            <TextField
-                                variant="outlined"
-                                required
-                                fullWidth
-                                id="email"
-                                label="Email Address"
-                                name="email"
-                                autoComplete="email"
-                            />
-                        </Grid>
-                        <Grid item xs={12} sm={6}>
-                            <TextField
-                                variant="outlined"
-                                required
-                                fullWidth
-                                name="password"
-                                label="Password"
-                                type="password"
-                                id="password"
-                                autoComplete="current-password"
-                            />
-                        </Grid>
-                        <Grid item xs={12} sm={6}>
-                            <TextField
-                                variant="outlined"
-                                required
-                                fullWidth
-                                name="password"
-                                label="Retype Password"
-                                type="password"
-                                id="passwordConfirm"
-                                autoComplete="current-password"
-                            />
-                        </Grid>
-                    </Grid>
-                    <Button
-                        type="submit"
-                        fullWidth
-                        variant="contained"
-                        color="primary"
-                        className={classes.submit}
-                    >
-                        Sign Up
-          </Button>
-                    <Grid container justify="flex-end">
-                        <Grid item>
-                            <Link href="#" variant="body2">
-                                Already have an account? Sign in
-              </Link>
-                        </Grid>
-                    </Grid>
-                </form>
-            </div>
-        </Container>
-    );
+                    </form>
+                </div>
+            </Container>
+        )
+    };
 }
+
+export default withStyles(useStyles, { withTheme: true })(Login);

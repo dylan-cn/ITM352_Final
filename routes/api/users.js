@@ -48,7 +48,9 @@ router.post('/register', (req, res) => {
             if (existingUser) {
                 if (existingUser.email === email) {
                     messages.email = 'E-mail is already in use!';
-                } else {
+                }
+
+                if (existingUser.username === username) {
                     messages.username = 'Username already exists!';
                 }
             } else {
@@ -92,10 +94,11 @@ router.post('/register', (req, res) => {
                             });
                         }
 
-                        messages.general = 'Successfully created account';
                         return res.status(200).json({
                             success,
-                            messages,
+                            messages: {
+                                general: 'Successfully created account'
+                            },
                             user: {
                                 firstName,
                                 lastName,
@@ -110,7 +113,7 @@ router.post('/register', (req, res) => {
                         success,
                         messages: {
                             general: 'Catastrophic error trying to save account to database'
-                        } 
+                        }
                     });
                 });
             } else {
