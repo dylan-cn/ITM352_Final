@@ -1,6 +1,6 @@
 import React from 'react';
 import { Redirect, Link } from 'react-router-dom';
-import { CssBaseline, Button, TextField, Grid, Typography, Container, CircularProgress } from '@material-ui/core';
+import { Button, TextField, Grid, Typography, Container, CircularProgress } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 
 const useStyles = theme => ({
@@ -104,11 +104,10 @@ class Login extends React.Component {
 
         return (
             <Container component="main" maxWidth="xs">
-                <CssBaseline />
                 <div className={classes.paper}>
                     <Typography component="h1" variant="h5">
                         Login
-                </Typography>
+                    </Typography>
                     <form className={classes.form} noValidate onSubmit={this.sendLoginRequest}>
                         <Grid container spacing={2}>
                             <Grid item xs={12}>

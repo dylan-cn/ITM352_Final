@@ -36,8 +36,12 @@ function auth(req, res, next) {
     // Gets token from x-auth-token
     const token = req.header('x-auth-token');
 
+    // Check token exists
     if (!token) {
-        return res.status(401).json({ messages: ['Authorization denied'] });
+        return res.status(401).json({ 
+            success: false,
+            messages: ['Authorization denied']
+        });
     }
 
     try {
@@ -48,6 +52,9 @@ function auth(req, res, next) {
         req.id = decode;
         next();
     } catch (err) {
-        res.status(400).json({ message: ['Token is invalid'] });
+        res.status(400).json({
+            success: false,
+            message: ['Token is invalid']
+        });
     }
 }

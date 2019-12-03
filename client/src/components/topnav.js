@@ -33,7 +33,7 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-export default function TopNav({ isAuth, user }) {
+export default function TopNav({ isAuth, user, updateAuth }) {
     const classes = useStyles();
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
@@ -54,6 +54,14 @@ export default function TopNav({ isAuth, user }) {
         handleMobileMenuClose();
     };
 
+    const logout = () => {
+        window.localStorage.removeItem("user");
+        if (!window.localStorage.getItem("user")) {
+            updateAuth(false);
+        }
+        handleMenuClose();
+    }
+
     const handleMobileMenuOpen = event => {
         setMobileMoreAnchorEl(event.currentTarget);
     };
@@ -69,7 +77,19 @@ export default function TopNav({ isAuth, user }) {
             open={isMenuOpen}
             onClose={handleMenuClose}
         >
-            <MenuItem onClick={handleMenuClose}>Logout</MenuItem>
+            { isAuth ?
+                <MenuItem onClick={logout}>Logout</MenuItem>
+                :
+                <div>
+                    <MenuItem component={Link} to="/Register" onClick={handleMenuClose}>
+                        Register
+                    </MenuItem>
+                    <MenuItem component={Link} to="/login" onClick={handleMenuClose}>
+                        Login
+                    </MenuItem>
+                </div>
+            }
+            
         </Menu>
     );
 
@@ -125,22 +145,16 @@ export default function TopNav({ isAuth, user }) {
                         null
                     }
                     <div className={classes.sectionDesktop}>
-                        {isAuth ?
-                            <IconButton
-                                edge="end"
-                                aria-label="account of current user"
-                                aria-controls={menuId}
-                                aria-haspopup="true"
-                                onClick={handleProfileMenuOpen}
-                                color="inherit"
-                            >
-                                <AccountCircle />
-                            </IconButton>
-                            :
-                            <>
-                                <Button component={Link} to="/Register">Register</Button>
-                                <Button component={Link} to="/login">Login</Button>
-                            </>}
+                        <IconButton
+                            edge="end"
+                            aria-label="account of current user"
+                            aria-controls={menuId}
+                            aria-haspopup="true"
+                            onClick={handleProfileMenuOpen}
+                            color="inherit"
+                        >
+                            <AccountCircle />
+                        </IconButton>
                     </div>
                     <div className={classes.sectionMobile}>
                         <IconButton
