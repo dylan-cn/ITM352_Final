@@ -1,10 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
-import { AccountCircle } from '@material-ui/icons';
-import MailIcon from '@material-ui/icons/Mail';
 import MoreIcon from '@material-ui/icons/MoreVert';
-import { Button, AppBar, Toolbar, IconButton, Typography, Badge, MenuItem, Menu } from '@material-ui/core';
+import { Button, AppBar, Toolbar, IconButton, Typography, MenuItem, Menu } from '@material-ui/core';
 
 const useStyles = makeStyles(theme => ({
     grow: {
@@ -12,22 +10,24 @@ const useStyles = makeStyles(theme => ({
     },
     menuButton: {
         marginRight: theme.spacing(2),
+        color: 'white',
     },
     title: {
         display: 'none',
         [theme.breakpoints.up('sm')]: {
             display: 'block',
+            marginRight: theme.spacing(2),
         },
     },
     sectionDesktop: {
         display: 'none',
-        [theme.breakpoints.up('md')]: {
+        [theme.breakpoints.up('sm')]: {
             display: 'flex',
         },
     },
     sectionMobile: {
         display: 'flex',
-        [theme.breakpoints.up('md')]: {
+        [theme.breakpoints.up('sm')]: {
             display: 'none',
         },
     },
@@ -77,19 +77,6 @@ export default function TopNav({ isAuth, user, updateAuth }) {
             open={isMenuOpen}
             onClose={handleMenuClose}
         >
-            { isAuth ?
-                <MenuItem onClick={logout}>Logout</MenuItem>
-                :
-                <div>
-                    <MenuItem component={Link} to="/Register" onClick={handleMenuClose}>
-                        Register
-                    </MenuItem>
-                    <MenuItem component={Link} to="/login" onClick={handleMenuClose}>
-                        Login
-                    </MenuItem>
-                </div>
-            }
-            
         </Menu>
     );
 
@@ -104,28 +91,18 @@ export default function TopNav({ isAuth, user, updateAuth }) {
             open={isMobileMenuOpen}
             onClose={handleMobileMenuClose}
         >
-            <MenuItem>
-                <IconButton aria-label="show 4 new mails" color="inherit">
-                    <Badge badgeContent={4} color="secondary">
-                        <MailIcon />
-                    </Badge>
-                </IconButton>
-                <p>Messages</p>
-            </MenuItem>
-            <MenuItem>
-                <Button component={Link} to='/login'>Login</Button>
-            </MenuItem>
-            <MenuItem onClick={handleProfileMenuOpen}>
-                <IconButton
-                    aria-label="account of current user"
-                    aria-controls="primary-search-account-menu"
-                    aria-haspopup="true"
-                    color="inherit"
-                >
-                    <AccountCircle />
-                </IconButton>
-                <p>Profile</p>
-            </MenuItem>
+            {isAuth ?
+                <MenuItem onClick={logout}>Logout</MenuItem>
+                :
+                <div>
+                    <MenuItem component={Link} to="/register" onClick={handleMenuClose}>
+                        Register
+                    </MenuItem>
+                    <MenuItem component={Link} to="/login" onClick={handleMenuClose}>
+                        Login
+                    </MenuItem>
+                </div>
+            }
         </Menu>
     );
 
@@ -133,16 +110,14 @@ export default function TopNav({ isAuth, user, updateAuth }) {
         <div className={classes.grow}>
             <AppBar position="static">
                 <Toolbar>
-                    <Typography className={classes.title} variant="h6" noWrap>
-                        Event Planner
+                    <Typography variant="h6" noWrap>
+                        App Template
                     </Typography>
                     <div className={classes.grow} />
-                    {isAuth && user ?
+                    {isAuth && user &&
                         <Typography className={classes.title} variant="h6" noWrap>
                             Hello, {`${user.firstName} ${user.lastName}`}
                         </Typography>
-                        :
-                        null
                     }
                     <div className={classes.sectionDesktop}>
                         <IconButton
@@ -153,8 +128,19 @@ export default function TopNav({ isAuth, user, updateAuth }) {
                             onClick={handleProfileMenuOpen}
                             color="inherit"
                         >
-                            <AccountCircle />
                         </IconButton>
+                        {isAuth ?
+                            <Button className={classes.menuButton} onClick={logout}>Logout</Button>
+                            :
+                            <>
+                                <Button className={classes.menuButton} component={Link} to="/register">
+                                    Register
+                                </Button>
+                                <Button className={classes.menuButton} component={Link} to="/login">
+                                    Login
+                                </Button>
+                            </>
+                        }
                     </div>
                     <div className={classes.sectionMobile}>
                         <IconButton
@@ -170,7 +156,7 @@ export default function TopNav({ isAuth, user, updateAuth }) {
                 </Toolbar>
             </AppBar>
             {renderMobileMenu}
-            {renderMenu}
+            {/* {renderMenu} */}
         </div>
     );
 }
