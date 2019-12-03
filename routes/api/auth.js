@@ -14,7 +14,7 @@ router.post('/login', (req, res) => {
     if (!username || !password) {
         return res.status(400).json({
             success: false,
-            message: ['All fields must be entered']
+            messages: ['All fields must be entered']
         });
     }
 

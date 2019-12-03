@@ -84,7 +84,7 @@ class Login extends React.Component {
                     this.setState({ loggedIn: true });
 
                 } else {
-                    this.setState({ errorMsg: 'Invalid credentials' });
+                    this.setState({ errorMsg: json.messages });
                 }
             })
             .catch(err => {
