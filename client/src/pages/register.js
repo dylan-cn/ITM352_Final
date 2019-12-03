@@ -90,7 +90,7 @@ export default function Register({ updateAuth }) {
 
     let localSuccess = false;
     // Send request to register
-    fetch('/api/users/register', {
+    fetch('/api/auth/register', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

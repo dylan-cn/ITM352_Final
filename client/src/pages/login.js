@@ -21,12 +21,15 @@ const useStyles = theme => ({
         position: 'absolute',
         top: '50%',
         left: '50%',
-        marginTop: -12,
+        marginTop: -8,
         marginLeft: -12,
     },
     wrapper: {
         margin: theme.spacing(1),
         position: 'relative',
+    },
+    error: {
+        color: 'red',
     },
 });
 
@@ -35,10 +38,12 @@ class Login extends React.Component {
         super(props);
         this.state = {
             isLoading: false,
-            loggedIn: false
+            loggedIn: false,
+            errorMsg: null
         };
 
         this.sendLoginRequest = this.sendLoginRequest.bind(this);
+        this.resetErrorMsg = this.resetErrorMsg.bind(this);
     }
 
     // Send post to login user
@@ -56,7 +61,7 @@ class Login extends React.Component {
         };
 
         // Send request to register
-        fetch('/api/auth', {
+        fetch('/api/auth/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -78,6 +83,8 @@ class Login extends React.Component {
                     window.localStorage.setItem('user', JSON.stringify(user));
                     this.setState({ loggedIn: true });
 
+                } else {
+                    this.setState({ errorMsg: 'Invalid credentials' });
                 }
             })
             .catch(err => {
@@ -92,6 +99,10 @@ class Login extends React.Component {
                     this.props.updateAuth(false);
                 }
             });
+    }
+
+    resetErrorMsg() {
+        this.setState({ errorMsg: null });
     }
 
     render() {
@@ -120,6 +131,7 @@ class Login extends React.Component {
                                     id="username"
                                     label="Username"
                                     autoFocus
+                                    onFocus={this.state.errorMsg && this.resetErrorMsg}
                                 />
                             </Grid>
                             <Grid item xs={12}>
@@ -132,9 +144,15 @@ class Login extends React.Component {
                                     name="password"
                                     autoComplete="password"
                                     type="password"
+                                    onFocus={this.state.errorMsg && this.resetErrorMsg}
                                 />
                             </Grid>
                         </Grid>
+
+                        {this.state.errorMsg &&
+                            <div className={classes.error}>
+                                <p>{this.state.errorMsg}</p>
+                            </div>}
                         <div className={classes.wrapper}>
                             <Button
                                 type="submit"
@@ -145,7 +163,7 @@ class Login extends React.Component {
                                 className={classes.submit}
                             >
                                 Login
-                        </Button>
+                            </Button>
                             {this.state.isLoading &&
                                 <div className={classes.spinner}>
                                     <CircularProgress size={24} />
