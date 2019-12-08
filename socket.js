@@ -14,6 +14,13 @@ module.exports = function (io) {
             socket.join(room);
         });
 
+        socket.on('send', msg => {
+            // Send to everyone else
+            socket.broadcast.emit('msg', msg);
+            // Also send to client
+            socket.emit('msg', msg);
+        });
+
         // disconnect is fired when a client leaves the server
         socket.on("disconnect", () => {
             console.log(socket.id + " has disconnected");
