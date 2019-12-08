@@ -1,6 +1,7 @@
-import React from 'react';
-import { CssBaseline, Typography, Container } from '@material-ui/core';
+import React, { useEffect } from 'react';
+import { Typography, Container } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+import socket from '../socket';
 
 const useStyles = makeStyles(theme => ({
     paper: {
@@ -23,16 +24,23 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export default function Test() {
+    useEffect(() => {
+
+        socket.emit('testData');
+
+        socket.on('msg', (data) => {
+            console.log(data);
+        });
+    }, []);
+
     const classes = useStyles();
 
     return (
         <Container component="main" maxWidth="xs">
-            <CssBaseline />
             <div className={classes.paper}>
                 <Typography component="h1" variant="h5">
-                    This is a test page to see if private routes work
+                    This is the test page for socket.io integration
                 </Typography>
-
             </div>
         </Container>
     );
