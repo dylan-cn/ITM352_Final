@@ -67,8 +67,10 @@ export default function Test() {
 
         const msg = form.message.value;
 
-        if (msg.trim().length > 0)
-            socket.emit('send', { msg });
+        if (msg.trim().length > 0) {
+            socket.emit('send', msg);
+            form.message.value = '';
+        }
     }
 
     return (
@@ -96,6 +98,7 @@ export default function Test() {
                             fullWidth
                             id="message"
                             label="Message"
+                            autoFocus
                         />
                     </Grid>
                     <Grid item xs={12} sm={1}>
