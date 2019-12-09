@@ -121,7 +121,7 @@ class App extends React.Component {
           <Router>
             <TopNav isAuth={this.state.auth} user={this.state.user} updateAuth={this.updateAuth} />
             <Switch>
-              <PrivateRoute path={"/test"} component={Test} isAuthenticated={this.state.auth} isLoading={this.state.loadingUser} />
+              <PrivateRoute path={"/test"} component={Test} isAuthenticated={this.state.auth} isLoading={this.state.loadingUser} user={this.state.user} />
               <LoggedInRoute exact path='/register' display={!this.state.auth && !this.state.loadingUser} isAuthenticated={this.state.auth} updateAuth={this.updateAuth} component={Register} />
               <LoggedInRoute exact path='/login' display={!this.state.auth && !this.state.loadingUser} isAuthenticated={this.state.auth} updateAuth={this.updateAuth} component={Login} />
               <Route exact path='/' component={Home} />

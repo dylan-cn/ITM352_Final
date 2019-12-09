@@ -37,7 +37,7 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-export default function Test() {
+export default function Test({ user }) {
     const [msgs, setMsgs] = useState([]);
     const [focus, setFocus] = useState(false);
     const msgEndRef = useRef(null);
@@ -68,9 +68,11 @@ export default function Test() {
         const msg = form.message.value;
 
         if (msg.trim().length > 0) {
-            socket.emit('send', msg);
+            socket.emit('send', { msg, username: user.username });
             form.message.value = '';
         }
+
+        form.message.focus();
     }
 
     return (

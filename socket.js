@@ -2,10 +2,6 @@ module.exports = function (io) {
     io.on("connection", socket => {
         console.log("New client connected: " + socket.id);
 
-        socket.on('testData', () => {
-            socket.emit('msg', "This is some test data");
-        });
-
         socket.on('sendMsg', (room, msg) => {
             socket.in(room).emit('receivedMsg', msg);
         });
@@ -14,11 +10,11 @@ module.exports = function (io) {
             socket.join(room);
         });
 
-        socket.on('send', msg => {
+        socket.on('send', data => {
             // Send to everyone else
-            socket.broadcast.emit('msg', msg);
+            socket.broadcast.emit('msg', `${data.username}: ${data.msg}`);
             // Also send to client
-            socket.emit('msg', msg);
+            socket.emit('msg', `${data.username}: ${data.msg}`);
         });
 
         // disconnect is fired when a client leaves the server

@@ -110,7 +110,9 @@ class Login extends React.Component {
         const { from } = this.props.location.state || { from: { pathname: '/' } };
 
         if (this.state.loggedIn && !this.state.isLoading) {
-            return <Redirect to={from} />
+            console.log(`trying to redirect to test`);
+            console.log(this.props.location.state);
+            return <Redirect to={from.pathname} />
         }
 
         return (
