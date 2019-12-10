@@ -2,6 +2,9 @@ import React from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import './App.css';
 import { CssBaseline, CircularProgress, Container } from '@material-ui/core';
+import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
+import pink from '@material-ui/core/colors/pink';
+import green from '@material-ui/core/colors/green';
 import { withStyles } from '@material-ui/core/styles';
 import { PrivateRoute } from './helper/PrivateRoute';
 import { LoggedInRoute } from './helper/LoggedInRoute';
@@ -26,6 +29,16 @@ const useStyles = theme => ({
     left: '50%',
     marginTop: -32,
     marginLeft: -32,
+  },
+});
+
+const theme = createMuiTheme({
+  palette: {
+    primary: pink,
+    secondary: green,
+  },
+  status: {
+    danger: 'orange',
   },
 });
 
@@ -115,20 +128,22 @@ class App extends React.Component {
     }
 
     return (
-      <div className="App">
-        <AuthProvider>
-          <CssBaseline />
-          <Router>
-            <TopNav isAuth={this.state.auth} user={this.state.user} updateAuth={this.updateAuth} />
-            <Switch>
-              <PrivateRoute path='/test' component={Test} isAuthenticated={this.state.auth} />
-              <LoggedInRoute exact path='/register' isAuthenticated={this.state.auth} updateAuth={this.updateAuth} component={Register} />
-              <LoggedInRoute exact path='/login' isAuthenticated={this.state.auth} updateAuth={this.updateAuth} component={Login} />
-              <Route exact path='/' component={Home} />
-            </Switch>
-          </Router>
-        </AuthProvider>
-      </div>
+      <ThemeProvider theme={theme}>
+        <div className="App">
+          <AuthProvider>
+            <CssBaseline />
+            <Router>
+              <TopNav isAuth={this.state.auth} user={this.state.user} updateAuth={this.updateAuth} />
+              <Switch>
+                <PrivateRoute path='/test' component={Test} isAuthenticated={this.state.auth} />
+                <LoggedInRoute exact path='/register' isAuthenticated={this.state.auth} updateAuth={this.updateAuth} component={Register} />
+                <LoggedInRoute exact path='/login' isAuthenticated={this.state.auth} updateAuth={this.updateAuth} component={Login} />
+                <Route exact path='/' component={Home} />
+              </Switch>
+            </Router>
+          </AuthProvider>
+        </div>
+      </ThemeProvider>
     );
   }
 }
