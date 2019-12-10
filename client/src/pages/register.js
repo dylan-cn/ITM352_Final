@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Redirect, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { Button, TextField, Grid, Typography, Container, CircularProgress } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -37,38 +37,38 @@ export default function Register({ updateAuth }) {
   const [isLoading, setIsLoading] = useState(false);
   const [messages, setMessages] = useState({});
   const [success, setSuccess] = useState(false);
-  const [redirect, setRedirect] = useState(5);
-  const [loadingUser, setLoadingUser] = useState(false);
+  // const [redirect, setRedirect] = useState(5);
+  // const [loadingUser, setLoadingUser] = useState(false);
   // const [firstNameError, setFirstNameError] = useState('');
   // const [lastNameError, setLastNameError] = useState('');
   // const [username, setUsernameError] = useState('');
   // const [email, setEmailError] = useState('');
   // const [password, setPasswordError] = useState('');
 
-  const amtOfTime = 5000;
-  function setDelay(startTime) {
-    var x = setInterval(function () {
+  // const amtOfTime = 5000;
+  // function setDelay(startTime) {
+  //   var x = setInterval(function () {
 
-      // Get current time in ms
-      var now = new Date().getTime();
+  //     // Get current time in ms
+  //     var now = new Date().getTime();
 
-      // Get the difference between now and startTime
-      var timeElapsed = now - startTime.getTime();
+  //     // Get the difference between now and startTime
+  //     var timeElapsed = now - startTime.getTime();
 
-      // Time calculations for seconds
-      var seconds = Math.floor((timeElapsed % (1000 * 60)) / 1000);
+  //     // Time calculations for seconds
+  //     var seconds = Math.floor((timeElapsed % (1000 * 60)) / 1000);
 
-      // Timer
-      let secondsLeft = Math.max((amtOfTime / 1000) - seconds, 0);
+  //     // Timer
+  //     let secondsLeft = Math.max((amtOfTime / 1000) - seconds, 0);
 
-      setRedirect(secondsLeft);
-      // check 5000 ms countdown
-      // send back to homepage when done counting
-      if (timeElapsed >= amtOfTime) {
-        clearInterval(x);
-      }
-    }, 1000);
-  }
+  //     setRedirect(secondsLeft);
+  //     // check 5000 ms countdown
+  //     // send back to homepage when done counting
+  //     if (timeElapsed >= amtOfTime) {
+  //       clearInterval(x);
+  //     }
+  //   }, 1000);
+  // }
 
   // Send post to register user
   async function sendRegisterRequest(e) {
@@ -132,6 +132,14 @@ export default function Register({ updateAuth }) {
       });
   }
 
+  const deleteMessage = (field) => {
+    let msgs = { ...messages };
+    msgs[field] = null;
+    msgs.general = null;
+
+    setMessages(msgs);
+  }
+
   const register = () => {
     return (
       <Container component="main" maxWidth="xs">
@@ -153,7 +161,7 @@ export default function Register({ updateAuth }) {
                   autoFocus
                   error={(messages.firstName ? true : false)}
                   helperText={messages.firstName ? messages.firstName : ''}
-                  onFocus={() => setMessages(({ ['firstName']: _, ...messages }) => messages)}
+                  onFocus={() => deleteMessage('firstName')}
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -167,7 +175,7 @@ export default function Register({ updateAuth }) {
                   autoComplete="lname"
                   error={(messages.lastName ? true : false)}
                   helperText={messages.lastName ? messages.lastName : ''}
-                  onFocus={() => setMessages(({ ['lastName']: _, ...messages }) => messages)}
+                  onFocus={() => deleteMessage('lastName')}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -181,7 +189,7 @@ export default function Register({ updateAuth }) {
                   autoComplete="username"
                   error={(messages.username ? true : false)}
                   helperText={messages.username ? messages.username : ''}
-                  onFocus={() => setMessages(({ ['username']: _, ...messages }) => messages)}
+                  onFocus={() => deleteMessage('username')}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -195,7 +203,7 @@ export default function Register({ updateAuth }) {
                   autoComplete="email"
                   error={(messages.email ? true : false)}
                   helperText={messages.email ? messages.email : ''}
-                  onFocus={() => setMessages(({ ['email']: _, ...messages }) => messages)}
+                  onFocus={() => deleteMessage('email')}
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -210,7 +218,7 @@ export default function Register({ updateAuth }) {
                   autoComplete="current-password"
                   error={(messages.password ? true : false)}
                   helperText={messages.password ? messages.password : ''}
-                  onFocus={() => setMessages(({ ['password']: _, ...messages }) => messages)}
+                  onFocus={() => deleteMessage('password')}
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -225,10 +233,11 @@ export default function Register({ updateAuth }) {
                   autoComplete="current-password"
                   error={(messages.password ? true : false)}
                   helperText={messages.password ? messages.password : ''}
-                  onFocus={() => setMessages(({ ['password']: _, ...messages }) => messages)}
+                  onFocus={() => deleteMessage('password')}
                 />
               </Grid>
             </Grid>
+            {messages.general && <p style={{ color: 'red' }}>{messages.general}</p>}
             <div className={classes.wrapper}>
               <Button
                 type="submit"
@@ -260,15 +269,14 @@ export default function Register({ updateAuth }) {
 
   const registerSuccess = () => {
     return (
-      redirect === 0 ? <Redirect to='/' /> :
-        <Container>
-          <div className={classes.paper}>
-            <Typography component="h1" variant="h5">
-              {messages.general}
-              {/* {`You will be redirected to homepage in ${redirect} seconds.`} */}
-            </Typography>
-          </div>
-        </Container>
+      <Container>
+        <div className={classes.paper}>
+          <Typography component="h1" variant="h5">
+            {messages.general}
+            {/* {`You will be redirected to homepage in ${redirect} seconds.`} */}
+          </Typography>
+        </div>
+      </Container>
     );
   }
 

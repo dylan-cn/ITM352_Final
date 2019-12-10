@@ -1,5 +1,5 @@
 import React from 'react';
-import { Redirect, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { Button, TextField, Grid, Typography, Container, CircularProgress } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 
