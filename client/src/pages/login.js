@@ -1,5 +1,5 @@
 import React from 'react';
-import { Redirect, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { Button, TextField, Grid, Typography, Container, CircularProgress } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 
@@ -95,6 +95,9 @@ class Login extends React.Component {
 
                 if (this.state.loggedIn) {
                     this.props.updateAuth(true);
+
+                    const { from } = this.props.location.state || { from: { pathname: '/' } };
+                    this.props.history.push(from.pathname);
                 } else {
                     this.props.updateAuth(false);
                 }
@@ -107,13 +110,6 @@ class Login extends React.Component {
 
     render() {
         const { classes } = this.props;
-        const { from } = this.props.location.state || { from: { pathname: '/' } };
-
-        if (this.state.loggedIn && !this.state.isLoading) {
-            console.log(`trying to redirect to test`);
-            console.log(this.props.location.state);
-            return <Redirect to={from.pathname} />
-        }
 
         return (
             <Container component="main" maxWidth="xs">
