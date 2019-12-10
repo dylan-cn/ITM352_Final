@@ -54,7 +54,7 @@ export default function Test({ user }) {
     const scrollToBottom = () => {
         // Only scroll to bottom if list does not have focus or client has scrolled far enough up
         if (!focus && (msgList.current.scrollTop + msgList.current.clientHeight) > msgList.current.scrollHeight * 0.85)
-            msgEndRef.current.scrollIntoView({ behavior: "smooth" })
+            msgEndRef.current.scrollIntoView({ behavior: "auto" })
     }
 
     useEffect(scrollToBottom, [msgs]);
