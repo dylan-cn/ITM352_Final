@@ -36,6 +36,7 @@ const theme = createMuiTheme({
   palette: {
     primary: pink,
     secondary: green,
+    type: 'dark',
   },
   status: {
     danger: 'orange',
