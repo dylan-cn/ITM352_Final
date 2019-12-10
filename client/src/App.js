@@ -115,20 +115,20 @@ class App extends React.Component {
     }
 
     return (
-      <div className="App" >
-        <CssBaseline />
+      <div className="App">
         <AuthProvider>
+          <CssBaseline />
           <Router>
             <TopNav isAuth={this.state.auth} user={this.state.user} updateAuth={this.updateAuth} />
             <Switch>
-              <PrivateRoute path={"/test"} component={Test} isAuthenticated={this.state.auth} isLoading={this.state.loadingUser} />
-              <LoggedInRoute exact path='/register' display={!this.state.auth && !this.state.loadingUser} isAuthenticated={this.state.auth} updateAuth={this.updateAuth} component={Register} />
-              <LoggedInRoute exact path='/login' display={!this.state.auth && !this.state.loadingUser} isAuthenticated={this.state.auth} updateAuth={this.updateAuth} component={Login} />
+              <PrivateRoute path={"/test"} component={Test} isAuthenticated={this.state.auth} />
+              <LoggedInRoute exact path='/register' isAuthenticated={this.state.auth} updateAuth={this.updateAuth} component={Register} />
+              <LoggedInRoute exact path='/login' isAuthenticated={this.state.auth} updateAuth={this.updateAuth} component={Login} />
               <Route exact path='/' component={Home} />
             </Switch>
           </Router>
         </AuthProvider>
-      </div >
+      </div>
     );
   }
 }

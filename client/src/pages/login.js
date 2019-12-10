@@ -95,6 +95,9 @@ class Login extends React.Component {
 
                 if (this.state.loggedIn) {
                     this.props.updateAuth(true);
+
+                    const { from } = this.props.location.state || { from: { pathname: '/' } };
+                    this.props.history.push(from.pathname);
                 } else {
                     this.props.updateAuth(false);
                 }
@@ -107,11 +110,6 @@ class Login extends React.Component {
 
     render() {
         const { classes } = this.props;
-        const { from } = this.props.location.state || { from: { pathname: '/' } };
-
-        if (this.state.loggedIn && !this.state.isLoading) {
-            return <Redirect to={from} />
-        }
 
         return (
             <Container component="main" maxWidth="xs">
