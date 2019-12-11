@@ -36,7 +36,8 @@ router.post('/login', (req, res) => {
             let passwordValidation = bcrypt.compareSync(password, existingUser.password);
             if (passwordValidation) {
                 // assign jwt to user
-                jwt.sign({ id: existingUser.id }, jwtSecret, (err, token) => {
+                const role = existingUser.role || 'user';
+                jwt.sign({ id: existingUser.id, role }, jwtSecret, (err, token) => {
                     if (err) {
                         return res.status(500).json({
                             success: false,
@@ -148,7 +149,8 @@ router.post('/register', (req, res) => {
             if (success) {
                 // Save user to database
                 newUser.save().then(user => {
-                    jwt.sign({ id: user.id }, jwtSecret, (err, token) => {
+                    const role = user.role || 'user';
+                    jwt.sign({ id: user.id, role }, jwtSecret, (err, token) => {
                         if (err) {
                             return res.status(500).json({
                                 success: false,

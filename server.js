@@ -38,7 +38,7 @@ function auth(req, res, next) {
 
     // Check token exists
     if (!token) {
-        return res.status(401).json({ 
+        return res.status(401).json({
             success: false,
             messages: ['Authorization denied']
         });
