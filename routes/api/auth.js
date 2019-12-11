@@ -52,7 +52,8 @@ router.post('/login', (req, res) => {
                             firstName: existingUser.firstName,
                             lastName: existingUser.lastName,
                             username,
-                            email: existingUser.email
+                            email: existingUser.email,
+                            role: existingUser.role || 'user'
                         },
                         token
                     });

@@ -8,6 +8,7 @@ import green from '@material-ui/core/colors/green';
 import { withStyles } from '@material-ui/core/styles';
 import { PrivateRoute } from './helper/PrivateRoute';
 import { LoggedInRoute } from './helper/LoggedInRoute';
+import { AdminRoute } from './helper/AdminRoute';
 import Register from './pages/register';
 import TopNav from './components/topnav';
 import Test from './pages/test';
@@ -70,16 +71,18 @@ class App extends React.Component {
         .then(res => res.json())
         .then(json => {
           if (json.success) {
-            this.setState({ auth: true });
             this.setState({
+              auth: true,
               user: {
                 ...user
               }
             });
           } else {
             window.localStorage.removeItem('user');
-            this.setState({ auth: false });
-            this.setState({ user: {} });
+            this.setState({
+              auth: false,
+              user: {}
+            });
           }
         })
         .catch(err => {
@@ -90,8 +93,10 @@ class App extends React.Component {
         })
 
     } else {
-      this.setState({ auth: false });
-      this.setState({ loadingUser: false });
+      this.setState({
+        auth: false,
+        loadingUser: false
+      });
     }
   }
 
@@ -108,8 +113,8 @@ class App extends React.Component {
   updateAuth = (status) => {
     const getUser = window.localStorage.getItem('user');
     const user = JSON.parse(getUser);
-    this.setState({ auth: status });
     this.setState({
+      auth: status,
       user: {
         ...user
       }
@@ -138,7 +143,7 @@ class App extends React.Component {
               <TopNav isAuth={this.state.auth} user={this.state.user} updateAuth={this.updateAuth} />
               <Switch>
                 <PrivateRoute path='/test' component={Test} isAuthenticated={this.state.auth} />
-                <Route exact path='/adminpanel' component={AdminPanel} />
+                <AdminRoute exact path='/adminpanel' component={AdminPanel} isAuthenticated={this.state.auth} role={this.state.user.role} />
                 <LoggedInRoute exact path='/register' isAuthenticated={this.state.auth} updateAuth={this.updateAuth} component={Register} />
                 <LoggedInRoute exact path='/login' isAuthenticated={this.state.auth} updateAuth={this.updateAuth} component={Login} />
                 <Route exact path='/' component={Home} />

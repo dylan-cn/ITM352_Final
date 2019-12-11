@@ -25,7 +25,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
 
 // Add routes
-app.use('/api/users', require('./routes/api/users.js'));
+app.use('/api/users', auth, require('./routes/api/users.js'));
 app.use('/api/auth', require('./routes/api/auth.js'));
 
 // Start Server
@@ -49,7 +49,8 @@ function auth(req, res, next) {
         const decode = jwt.verify(token, jwtSecret);
 
         // Add user from jwt
-        req.id = decode;
+        req.id = decode.id;
+        req.role = decode.role;
         next();
     } catch (err) {
         res.status(400).json({
