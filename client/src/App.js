@@ -13,6 +13,7 @@ import TopNav from './components/topnav';
 import Test from './pages/test';
 import Login from './pages/login';
 import Home from './pages/home';
+import AdminPanel from './pages/AdminPanel';
 import { AuthProvider } from './context/AuthContext';
 
 
@@ -137,6 +138,7 @@ class App extends React.Component {
               <TopNav isAuth={this.state.auth} user={this.state.user} updateAuth={this.updateAuth} />
               <Switch>
                 <PrivateRoute path='/test' component={Test} isAuthenticated={this.state.auth} />
+                <Route exact path='/adminpanel' component={AdminPanel} />
                 <LoggedInRoute exact path='/register' isAuthenticated={this.state.auth} updateAuth={this.updateAuth} component={Register} />
                 <LoggedInRoute exact path='/login' isAuthenticated={this.state.auth} updateAuth={this.updateAuth} component={Login} />
                 <Route exact path='/' component={Home} />
