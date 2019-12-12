@@ -23,34 +23,54 @@ export default function AddProductTab() {
     const [loading, setLoading] = useState(false);
     const [users, setUsers] = useState([]);
     const [errors, setErrors] = useState();
+    const [message, setMessage] = useState();
 
-    useEffect(() => {
+    async function sendAddProductRequest(e) {
+        // Prevent the form from submitting
+        e.preventDefault();
+
+        // Set loading state
         setLoading(true);
-        const user = JSON.parse(window.localStorage.getItem('user'));
+
+        let form = e.target;
+        let productInfo = {
+            name: form.name.value,
+            description: form.description.value,
+            size: form.size.value,
+            price: form.price.value,
+            picture: form.picture.value,
+        };
+
         // Send request to register
-        fetch('/api/users', {
-            method: 'GET',
+        fetch('/api/product/add', {
+            method: 'POST',
             headers: {
-                'x-auth-token': user.token
+                'Content-Type': 'application/json', 
+                'x-auth-token': JSON.parse(window.localStorage.getItem('user')).token
             },
+            body: JSON.stringify(productInfo)
         })
             .then(res => res.json())
             .then(json => {
-                // Registration was a success
+                // successfully added product
                 if (json.success) {
-                    setUsers(json.users);
+                    // Create product
+
+                    // Save user into local storage upon account creation
+                    // Stringify the object
+                    // window.localStorage.setItem('product', JSON.stringify(user));
+                setMessage('sucessfully added product ' + json.doc.name);
                 } else {
-                    setErrors('Could not retrieve users from database...');
+                    setMessage(json.messages);
                 }
             })
             .catch(err => {
-                setErrors('Could not retrieve users from database...');
+
             })
             .finally(() => {
                 setLoading(false);
             });
-    }, []);
-
+    }
     return (
         <>
             <Typography component="h1" variant="h5">
@@ -58,7 +78,7 @@ export default function AddProductTab() {
             </Typography>
 
             <Container className={classes.users}>
-                <form className={classes.form} noValidate>
+                <form className={classes.form} onSubmit={sendAddProductRequest}>
                     <Grid container spacing={2}>
                         <Grid item xs={12}>
                             <TextField
@@ -136,68 +156,10 @@ export default function AddProductTab() {
                             </Button>
                     </div>
                 </form>
+                <Typography>
+                    {message}
+                </Typography>
             </Container>
         </>
-    );
-}
-
-function UserRow({ userInfo }) {
-    const [user, setUser] = useState({ ...userInfo });
-    const [loading, setLoading] = useState(false);
-    const [errors, setErrors] = useState();
-
-    const setRank = (rank) => (event) => {
-        setLoading(true);
-        const userData = JSON.parse(window.localStorage.getItem('user'));
-
-        //Send request to update document
-        fetch('/api/users', {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-                'x-auth-token': userData.token
-            },
-            body: JSON.stringify({ _id: user._id, role: rank })
-        })
-            .then(res => res.json())
-            .then(json => {
-                // Registration was a success
-                if (json.success) {
-                    setUser(json.user);
-                } else {
-                    setErrors('Could not update record');
-                }
-            })
-            .catch(err => {
-                setErrors('Database error');
-            })
-            .finally(() => {
-                setLoading(false);
-            });
-    }
-
-    return (
-        <TableRow key={user._id}>
-            <TableCell component="th" scope="row">
-                {user.username}
-            </TableCell>
-            <TableCell>{`${user.firstName} ${user.lastName}`}</TableCell>
-            <TableCell>{user.role}</TableCell>
-            <TableCell align="center">
-                {loading && <CircularProgress size={24} />}
-
-                {user.role === 'user' && !loading &&
-                    <Button variant="contained" color="secondary" onClick={setRank('admin')}>
-                        Promote
-                    </Button>
-                }
-
-                {user.role === 'admin' && !loading &&
-                    <Button variant="contained" color="primary" onClick={setRank('user')}>
-                        Demote
-                    </Button>
-                }
-            </TableCell>
-        </TableRow>
     );
 }

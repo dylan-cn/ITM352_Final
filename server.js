@@ -27,6 +27,7 @@ app.use(express.json());
 // Add routes
 app.use('/api/users', auth, require('./routes/api/users.js'));
 app.use('/api/auth', require('./routes/api/auth.js'));
+app.use('/api/product', auth, require('./routes/api/product'));
 
 // Start Server
 app.listen(8080, () => console.log('Server started on port 8080'));
