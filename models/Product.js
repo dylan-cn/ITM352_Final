@@ -5,7 +5,6 @@ const ProductSchema = new Schema({
     name: {
         type: String,
         required: true,
-        unique: true
     },
     price: {
         type: Number,
@@ -18,7 +17,7 @@ const ProductSchema = new Schema({
     picture: {
         type: String,
     },
-    sizes: {
+    size: {
         type: String,
     },
 });

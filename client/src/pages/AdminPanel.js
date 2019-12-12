@@ -6,6 +6,7 @@ import BorderColorRoundedIcon from '@material-ui/icons/BorderColorRounded';
 import AddCircleRoundedIcon from '@material-ui/icons/AddCircleRounded';
 import AccountCircleRoundedIcon from '@material-ui/icons/AccountCircleRounded';
 import UserTab from '../components/Admin/UserTab';
+import AddProductTab from '../components/Admin/AddProductTab';
 
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -75,7 +76,7 @@ export default function VerticalTabs() {
                 <UserTab />
             </TabPanel>
             <TabPanel value={value} index={1}>
-                Item Two
+                <AddProductTab />
             </TabPanel>
             <TabPanel value={value} index={2}>
                 Item Three
