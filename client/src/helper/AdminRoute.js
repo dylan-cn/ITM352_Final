@@ -5,7 +5,7 @@ export const AdminRoute = ({ component: Component, isAuthenticated, role, ...res
     <Route
         {...rest}
         render={(props) => {
-            return isAuthenticated && role == 'admin' ?
+            return isAuthenticated && role === 'admin' ?
                 (<Component {...props} />) :
                 (<Redirect to={{ pathname: '/', state: { from: props.location } }} />
                 );

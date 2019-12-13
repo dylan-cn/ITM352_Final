@@ -14,7 +14,7 @@ router.post('/', (req, res) => {
 
     const { files } = req;
 
-    if (!files.file) {
+    if (!files) {
         return res.status(400).json({
             success: false,
             message: 'Bad request'

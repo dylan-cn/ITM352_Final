@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Typography, Container, Button, Table, TableBody, TableCell, TableHead, TableRow, CircularProgress } from '@material-ui/core';
+import { Typography, Container, Button, Table, TableBody, TableCell, TableHead, TableRow, CircularProgress, Paper } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles(theme => ({
@@ -11,7 +11,7 @@ const useStyles = makeStyles(theme => ({
     },
     users: {
         marginTop: theme.spacing(4),
-    }
+    },
 }));
 
 export default function UserTab() {
@@ -50,28 +50,29 @@ export default function UserTab() {
 
     return (
         <>
-            <Typography component="h1" variant="h5">
-                This is the user management tab
-            </Typography>
-
             <Container className={classes.users}>
+                <Typography component="h1" variant="h5">
+                    This is the user management tab
+                </Typography>
                 {loading ? <Typography>Loading...</Typography>
                     : !errors ?
-                        <Table aria-label="users table">
-                            <TableHead>
-                                <TableRow>
-                                    <TableCell>Username</TableCell>
-                                    <TableCell>Name</TableCell>
-                                    <TableCell>Role</TableCell>
-                                    <TableCell>Promote to Admin</TableCell>
-                                </TableRow>
-                            </TableHead>
-                            <TableBody>
-                                {users.map(user => (
-                                    <UserRow key={user._id} userInfo={user} />
-                                ))}
-                            </TableBody>
-                        </Table>
+                        <Container>
+                            <Table aria-label="users table">
+                                <TableHead>
+                                    <TableRow>
+                                        <TableCell>Username</TableCell>
+                                        <TableCell>Name</TableCell>
+                                        <TableCell>Role</TableCell>
+                                        <TableCell>Promote to Admin</TableCell>
+                                    </TableRow>
+                                </TableHead>
+                                <TableBody>
+                                    {users.map(user => (
+                                        <UserRow key={user._id} userInfo={user} />
+                                    ))}
+                                </TableBody>
+                            </Table>
+                        </Container>
                         :
                         <Typography>{errors}</Typography>
                 }

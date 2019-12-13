@@ -55,7 +55,6 @@ router.put('/', (req, res) => {
                 updatedUser.role = role;
                 updatedUser.save()
                     .then((newDoc) => {
-                        console.log(newDoc);
                         return res.status(200).json({
                             success: true,
                             user: newDoc
