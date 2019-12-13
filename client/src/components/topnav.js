@@ -43,6 +43,12 @@ const useStyles = makeStyles(theme => ({
             display: 'none',
         },
     },
+    sectionMainMobile: {
+        display: 'flex',
+        [theme.breakpoints.up('md')]: {
+            display: 'none',
+        },
+    },
     list: {
         width: 250,
     },
@@ -179,7 +185,7 @@ export default function TopNav({ isAuth, user, updateAuth }) {
         <div className={classes.grow}>
             <AppBar position="static">
                 <Toolbar>
-                    <div className={classes.sectionMobile}>
+                    <div className={classes.sectionMainMobile}>
                         <IconButton
                             aria-label="show main menu"
                             aria-controls={mobileMainMenuId}

@@ -56,7 +56,7 @@ export default function UserTab() {
                 This is the user management tab
             </Typography>
             <Paper className={classes.users}>
-                {loading ? <Typography>Loading...</Typography>
+                {loading ? <Typography align="center">Loading...</Typography>
                     : !errors ?
                         <Container>
                             <Table aria-label="users table">
@@ -76,7 +76,7 @@ export default function UserTab() {
                             </Table>
                         </Container>
                         :
-                        <Typography>{errors}</Typography>
+                        <Typography align="center">{errors}</Typography>
                 }
             </Paper>
         </>
