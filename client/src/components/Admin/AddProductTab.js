@@ -15,7 +15,7 @@ const useStyles = makeStyles(theme => ({
     },
     wrapper: {
         marginTop: theme.spacing(4)
-    }
+    },
 }));
 
 export default function AddProductTab() {
@@ -255,13 +255,13 @@ export default function AddProductTab() {
                     <Grid container spacing={2}>
               {buttons && buttons.map((value, idx) => {
                 return (
-                  <Grid item xs={12 / buttons.length} key={idx}>
+                  <Grid item sm={12 / buttons.length} key={idx}>
                     <Button
                       type="button"
                       fullWidth
                       variant="contained"
                       color="primary"
-                      className={classes.submit}
+                      className={classes.sizeButton}
                       onClick={() => handleSizes(value)}
                     >
                       Add {value}

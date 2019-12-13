@@ -47,6 +47,9 @@ const useStyles = makeStyles(theme => ({
     tabs: {
         borderRight: `1px solid ${theme.palette.divider}`,
     },
+    wrapper: {
+        margin: 'auto',
+    },
 }));
 
 export default function VerticalTabs() {
@@ -72,15 +75,17 @@ export default function VerticalTabs() {
                 <Tab label="Add Product" icon={<AddCircleRoundedIcon />} {...a11yProps(1)} />
                 <Tab label="Catering Requests" icon={<BorderColorRoundedIcon />} {...a11yProps(2)} />
             </Tabs>
-            <TabPanel value={value} index={0}>
-                <UserTab />
-            </TabPanel>
-            <TabPanel value={value} index={1}>
-                <AddProductTab />
-            </TabPanel>
-            <TabPanel value={value} index={2}>
-                Item Three
-            </TabPanel>
-        </div>
+            <div className={classes.wrapper}>
+                <TabPanel value={value} index={0}>
+                    <UserTab />
+                </TabPanel>
+                <TabPanel value={value} index={1}>
+                    <AddProductTab />
+                </TabPanel>
+                <TabPanel value={value} index={2}>
+                    Item Three
+                </TabPanel>
+            </div>
+        </div >
     );
 }
