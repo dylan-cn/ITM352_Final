@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Typography, Container, Button, Table, TableBody, TableCell, TableHead, TableRow, CircularProgress, Grid, TextField, FormControl, InputLabel, Select } from '@material-ui/core';
+import React, { useState, } from 'react';
+import { Typography, Container, Button, Grid, TextField, FormControl, InputLabel, Select } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import axios from 'axios';
 
@@ -22,12 +22,9 @@ export default function AddProductTab() {
   const classes = useStyles();
 
   const [loading, setLoading] = useState(false);
-  const [users, setUsers] = useState([]);
   const [errors, setErrors] = useState();
   const [message, setMessage] = useState();
   const [file, setFile] = useState();
-  const [fileUploaded, setFileUploaded] = useState(false);
-  const [fileName, setFileName] = useState();
   const [sizes, setSizes] = useState();
   const [buttons, setButtons] = useState(['One Size', 'Small', 'Medium', 'Large']);
 
@@ -35,6 +32,7 @@ export default function AddProductTab() {
     // console.log(e.target.files)
     setFile(e.target.files)
   }
+
   function handleSizes(size) {
     switch (size) {
       case 'Small':
@@ -87,7 +85,8 @@ export default function AddProductTab() {
             'One Size'
           ]);
         }
-        setButtons([...buttons].filter(i => i !== 'One Size'));
+        setButtons([]);
+        setSizes(['One Size']);
         break;
       default:
         break;
@@ -130,6 +129,8 @@ export default function AddProductTab() {
       resData = response.data;
     } catch (err) {
       console.log(err);
+      setLoading(false);
+      setFile(null);
     }
 
     // file did not upload
@@ -174,13 +175,11 @@ export default function AddProductTab() {
       .finally(() => {
         setLoading(false);
         setFile(null);
-        setFileUploaded(null);
-        setFileName(null);
       });
   }
   return (
     <>
-      <Typography component="h1" variant="h5">
+      <Typography align="center" component="h1" variant="h5">
         This is the add product tab
       </Typography>
 
@@ -231,7 +230,7 @@ export default function AddProductTab() {
             </Grid>
             {buttons && buttons.map((value, idx) => {
               return (
-                <Grid item xs={6} sm={12 / buttons.length} key={idx}>
+                <Grid item xs={12} sm={12 / buttons.length} key={idx}>
                   <Button
                     type="button"
                     fullWidth
@@ -247,29 +246,22 @@ export default function AddProductTab() {
             })}
             {sizes && sizes.map((value, idx) => {
               return (
-                <>
-                  <Grid item xs={12} sm={6}>
-                    <TextField
-                      variant="outlined"
-                      disabled
-                      fullWidth
-                      id="size"
-                      label="Product Size"
-                      name="size"
-                      value={value}
-                    />
-                  </Grid>
-                  <Grid item xs={12} sm={6}>
+                <React.Fragment key={value}>
+                  <Grid item xs={12}>
                     <TextField
                       variant="outlined"
                       required
                       fullWidth
                       id={`${value}-price`}
-                      label="Price"
+                      label={`${value} Price`}
                       name={`${value}-price`}
+                      inputProps={{
+                        type: 'number',
+                        min: '0'
+                      }}
                     />
                   </Grid>
-                </>
+                </React.Fragment>
               );
             })}
             <Grid item xs={12}>
@@ -296,7 +288,7 @@ export default function AddProductTab() {
               color="primary"
             >
               Add Product
-                            </Button>
+            </Button>
           </div>
         </form>
         <Typography>

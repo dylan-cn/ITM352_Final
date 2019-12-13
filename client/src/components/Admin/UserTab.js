@@ -11,6 +11,8 @@ const useStyles = makeStyles(theme => ({
     },
     users: {
         marginTop: theme.spacing(4),
+        width: '100%',
+        overflowX: 'auto',
     },
 }));
 
@@ -50,20 +52,20 @@ export default function UserTab() {
 
     return (
         <>
-            <Container className={classes.users}>
-                <Typography component="h1" variant="h5">
-                    This is the user management tab
-                </Typography>
+            <Typography align="center" component="h1" variant="h5">
+                This is the user management tab
+            </Typography>
+            <Paper className={classes.users}>
                 {loading ? <Typography>Loading...</Typography>
                     : !errors ?
                         <Container>
                             <Table aria-label="users table">
                                 <TableHead>
                                     <TableRow>
-                                        <TableCell>Username</TableCell>
-                                        <TableCell>Name</TableCell>
-                                        <TableCell>Role</TableCell>
-                                        <TableCell>Promote to Admin</TableCell>
+                                        <TableCell align="center">Username</TableCell>
+                                        <TableCell align="center">Name</TableCell>
+                                        <TableCell align="center">Role</TableCell>
+                                        <TableCell align="center">Promote to Admin</TableCell>
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
@@ -76,7 +78,7 @@ export default function UserTab() {
                         :
                         <Typography>{errors}</Typography>
                 }
-            </Container>
+            </Paper>
         </>
     );
 }
@@ -118,11 +120,9 @@ function UserRow({ userInfo }) {
 
     return (
         <TableRow key={user._id}>
-            <TableCell component="th" scope="row">
-                {user.username}
-            </TableCell>
-            <TableCell>{`${user.firstName} ${user.lastName}`}</TableCell>
-            <TableCell>{user.role}</TableCell>
+            <TableCell align="center">{user.username}</TableCell>
+            <TableCell align="center">{`${user.firstName} ${user.lastName}`}</TableCell>
+            <TableCell align="center">{user.role}</TableCell>
             <TableCell align="center">
                 {loading && <CircularProgress size={24} />}
 

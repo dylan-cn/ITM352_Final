@@ -17,6 +17,8 @@ import Home from './pages/home';
 import AdminPanel from './pages/AdminPanel';
 import { AuthProvider } from './context/AuthContext';
 import { blue } from '@material-ui/core/colors';
+import UserTab from './components/Admin/UserTab';
+import AddProductTab from './components/Admin/AddProductTab';
 
 
 const useStyles = theme => ({
@@ -139,21 +141,21 @@ class App extends React.Component {
 
     return (
       <ThemeProvider theme={theme}>
-        <div className="App">
-          <AuthProvider>
-            <CssBaseline />
-            <Router>
-              <TopNav isAuth={this.state.auth} user={this.state.user} updateAuth={this.updateAuth} />
-              <Switch>
-                <PrivateRoute path='/test' component={Test} isAuthenticated={this.state.auth} />
-                <AdminRoute exact path='/adminpanel' component={AdminPanel} isAuthenticated={this.state.auth} role={this.state.user.role} />
-                <LoggedInRoute exact path='/register' isAuthenticated={this.state.auth} updateAuth={this.updateAuth} component={Register} />
-                <LoggedInRoute exact path='/login' isAuthenticated={this.state.auth} updateAuth={this.updateAuth} component={Login} />
-                <Route exact path='/' component={Home} />
-              </Switch>
-            </Router>
-          </AuthProvider>
-        </div>
+        <AuthProvider>
+          <CssBaseline />
+          <Router>
+            <TopNav isAuth={this.state.auth} user={this.state.user} updateAuth={this.updateAuth} />
+            <Switch>
+              <PrivateRoute path='/test' component={Test} isAuthenticated={this.state.auth} />
+              <AdminRoute exact path='/adminpanel' component={AdminPanel} isAuthenticated={this.state.auth} role={this.state.user.role} />
+              <AdminRoute exact path='/admin/users' component={UserTab} isAuthenticated={this.state.auth} role={this.state.user.role} />
+              <AdminRoute exact path='/admin/addproduct' component={AddProductTab} isAuthenticated={this.state.auth} role={this.state.user.role} />
+              <LoggedInRoute exact path='/register' isAuthenticated={this.state.auth} updateAuth={this.updateAuth} component={Register} />
+              <LoggedInRoute exact path='/login' isAuthenticated={this.state.auth} updateAuth={this.updateAuth} component={Login} />
+              <Route exact path='/' component={Home} />
+            </Switch>
+          </Router>
+        </AuthProvider>
       </ThemeProvider>
     );
   }
