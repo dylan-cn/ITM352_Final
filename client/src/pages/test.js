@@ -1,5 +1,5 @@
 import React from 'react';
-import { CssBaseline, Typography, Container } from '@material-ui/core';
+import { Typography, Container } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles(theme => ({
@@ -27,7 +27,6 @@ export default function Test() {
 
     return (
         <Container component="main" maxWidth="xs">
-            <CssBaseline />
             <div className={classes.paper}>
                 <Typography component="h1" variant="h5">
                     This is a test page to see if private routes work

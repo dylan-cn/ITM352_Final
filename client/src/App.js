@@ -19,6 +19,7 @@ import { AuthProvider } from './context/AuthContext';
 import { blue } from '@material-ui/core/colors';
 import UserTab from './components/Admin/UserTab';
 import AddProductTab from './components/Admin/AddProductTab';
+import NotFound from './pages/NotFound';
 
 
 const useStyles = theme => ({
@@ -153,6 +154,7 @@ class App extends React.Component {
               <LoggedInRoute exact path='/register' isAuthenticated={this.state.auth} updateAuth={this.updateAuth} component={Register} />
               <LoggedInRoute exact path='/login' isAuthenticated={this.state.auth} updateAuth={this.updateAuth} component={Login} />
               <Route exact path='/' component={Home} />
+              <Route component={NotFound} />
             </Switch>
           </Router>
         </AuthProvider>
