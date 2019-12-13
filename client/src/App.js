@@ -16,6 +16,7 @@ import Login from './pages/login';
 import Home from './pages/home';
 import AdminPanel from './pages/AdminPanel';
 import { AuthProvider } from './context/AuthContext';
+import { blue } from '@material-ui/core/colors';
 
 
 const useStyles = theme => ({
@@ -36,9 +37,11 @@ const useStyles = theme => ({
 
 const theme = createMuiTheme({
   palette: {
-    primary: pink,
-    secondary: green,
-    type: 'dark',
+    primary: {
+      main: '#000'
+    },
+    secondary: blue,
+    type: 'light',
   },
   status: {
     danger: 'orange',

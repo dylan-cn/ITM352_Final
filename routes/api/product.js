@@ -11,16 +11,15 @@ router.post('/add', (req, res) => {
             message: 'Unauthorized'
         });
     }
-const{name, description, price, size, picture} = req.body;
+const{name, description, prices, picture} = req.body;
     // Get all products
-    Product.find({name, size})
+    Product.find({name})
         .then(products => {
             if (products.length === 0 ){
                 const newProduct = new Product({
                     name, 
                     description, 
-                    price, 
-                    size, 
+                    prices,
                     picture
                 });
                 newProduct.save().then(doc=>{
