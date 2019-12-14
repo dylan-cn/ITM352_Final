@@ -55,6 +55,9 @@ const useStyles = makeStyles(theme => ({
     fullList: {
         width: 'auto',
     },
+    navbar: {
+        marginBottom: theme.spacing(2),
+    },
 }));
 
 export default function TopNav({ isAuth, user, updateAuth }) {
@@ -183,7 +186,7 @@ export default function TopNav({ isAuth, user, updateAuth }) {
 
     return (
         <div className={classes.grow}>
-            <AppBar position="static">
+            <AppBar position="static" className={classes.navbar}>
                 <Toolbar>
                     <div className={classes.sectionMainMobile}>
                         <IconButton
