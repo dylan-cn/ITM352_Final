@@ -4,14 +4,19 @@ import { Container, Grid } from '@material-ui/core';
 import Typography from '@material-ui/core/Typography';
 import ProductCard from '../components/Product/ProductCard';
 
-const useStyles = makeStyles({
-    card: {
-        maxWidth: 345,
-    },
-    root: {
-        flexGrow: 1,
-    },
-});
+const useStyles = makeStyles(theme => ({
+    paper: {
+        card: {
+            maxWidth: 345,
+        },
+        root: {
+            flexGrow: 1,
+        },
+        wrapper: {
+            marginTop: theme.spacing(2),
+        }
+    }
+}));
 
 const products = [
     {
@@ -59,16 +64,17 @@ export default function Products() {
 
     return (
         <Container className={classes.root}>
-            <Grid container spacing={3}>
-                {products.map((item, idx) => {
-                    return (
-                        <Grid item xs={6} md={4}>
-                            <ProductCard productData={item} key={item._id} />
-                        </Grid>
-                    );
-                })}
-            </Grid>
-
+            <div className={classes.wrapper}>
+                <Grid container spacing={3}>
+                    {products.map((item, idx) => {
+                        return (
+                            <Grid item xs={6} md={4} key={idx + item}>
+                                <ProductCard productData={item} key={item._id} />
+                            </Grid>
+                        );
+                    })}
+                </Grid>
+            </div>
         </Container>
     );
 }
