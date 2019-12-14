@@ -257,7 +257,8 @@ export default function AddProductTab() {
                       name={`${value}-price`}
                       inputProps={{
                         type: 'number',
-                        min: '0'
+                        min: '0',
+                        step: "0.01"
                       }}
                     />
                   </Grid>

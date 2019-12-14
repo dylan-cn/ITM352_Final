@@ -20,6 +20,7 @@ import { blue } from '@material-ui/core/colors';
 import UserTab from './components/Admin/UserTab';
 import AddProductTab from './components/Admin/AddProductTab';
 import NotFound from './pages/NotFound';
+import Products from './pages/Products';
 
 
 const useStyles = theme => ({
@@ -153,6 +154,7 @@ class App extends React.Component {
               <AdminRoute exact path='/admin/addproduct' component={AddProductTab} isAuthenticated={this.state.auth} role={this.state.user.role} />
               <LoggedInRoute exact path='/register' isAuthenticated={this.state.auth} updateAuth={this.updateAuth} component={Register} />
               <LoggedInRoute exact path='/login' isAuthenticated={this.state.auth} updateAuth={this.updateAuth} component={Login} />
+              <Route exact path='/products/' component={Products} />
               <Route exact path='/' component={Home} />
               <Route component={NotFound} />
             </Switch>
