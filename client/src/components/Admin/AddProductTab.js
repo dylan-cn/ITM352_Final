@@ -16,7 +16,13 @@ const useStyles = makeStyles(theme => ({
   wrapper: {
     marginTop: theme.spacing(4)
   },
+  centerButton: {
+    margin: 'auto',
+  }
 }));
+
+// Hold all sizes
+const sizeButtons = ['One Size', 'Small', 'Medium', 'Large'];
 
 export default function AddProductTab() {
   const classes = useStyles();
@@ -26,13 +32,59 @@ export default function AddProductTab() {
   const [message, setMessage] = useState();
   const [file, setFile] = useState();
   const [sizes, setSizes] = useState();
-  const [buttons, setButtons] = useState(['One Size', 'Small', 'Medium', 'Large']);
+  const [buttons, setButtons] = useState([...sizeButtons]);
 
+  // When uploaded file changes, update state
   function handleFileChange(e) {
-    // console.log(e.target.files)
     setFile(e.target.files)
   }
 
+  // Remove Price inputs from list and ensure
+  // the Size Button go back in order
+  function removeSize(size) {
+    const currBtns = [...sizeButtons];
+    let a;
+    switch (size) {
+      case 'Small':
+        setSizes([
+          ...sizes
+        ].filter(i => i !== 'Small'));
+        a = currBtns.filter(el => {
+          return buttons.includes(el) || el === 'Small';
+        });
+        setButtons([...a]);
+        break;
+
+      case 'Medium':
+        setSizes([
+          ...sizes
+        ].filter(i => i !== 'Medium'));
+        a = currBtns.filter(el => {
+          return buttons.includes(el) || el === 'Medium';
+        });
+        setButtons([...a]);
+        break;
+
+      case 'Large':
+        setSizes([
+          ...sizes
+        ].filter(i => i !== 'Large'));
+        a = currBtns.filter(el => {
+          return buttons.includes(el) || el === 'Large';
+        });
+        setButtons([...a]);
+        break;
+
+      case 'One Size':
+        setSizes([
+          ...sizes
+        ].filter(i => i !== 'One Size'));
+        setButtons([...sizeButtons]);
+        break;
+    }
+  }
+
+  // Add the sizes for displaying price inputs
   function handleSizes(size) {
     switch (size) {
       case 'Small':
@@ -88,11 +140,13 @@ export default function AddProductTab() {
         setButtons([]);
         setSizes(['One Size']);
         break;
+
       default:
         break;
     }
   }
 
+  // Send the Add Product request back to the server
   async function sendAddProductRequest(e) {
     // Prevent the form from submitting
     e.preventDefault();
@@ -104,14 +158,13 @@ export default function AddProductTab() {
 
     let prices = {};
     for (let element of sizes) {
-      prices[element] = form[`${element}-price`].value
+      prices[element] = form[`${element}-price`].value;
     }
 
-    //console.log(prices)
-
+    // Config for Axios file upload
     const config = {
       onUploadProgress: function (progressEvent) {
-        var percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total)
+        var percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
         //console.log(percentCompleted)
       },
       headers: {
@@ -119,11 +172,13 @@ export default function AddProductTab() {
       }
     }
 
+    // Form data to send to server for File Upload
     let data = new FormData();
     data.append('file', file[0]);
 
-
     let resData = null;
+    // Send request for file upload first
+    // Don't allow updates to products database if file did not work
     try {
       const response = await axios.post('/api/upload', data, config);
       resData = response.data;
@@ -135,7 +190,6 @@ export default function AddProductTab() {
 
     // file did not upload
     if (!resData) {
-      console.log('did not upload file');
       return;
     }
 
@@ -157,14 +211,13 @@ export default function AddProductTab() {
     })
       .then(res => res.json())
       .then(json => {
-        // successfully added product
+        // Successfully added product
         if (json.success) {
-          // Create product
-
-          // Save user into local storage upon account creation
-          // Stringify the object
-          // window.localStorage.setItem('product', JSON.stringify(user));
           setMessage('Sucessfully added product ' + json.doc.name);
+          // Reset product form here
+          e.target.reset();
+          // Reset the sizes buttons
+          setButtons([...sizeButtons]);
         } else {
           setMessage(`Could not add product: ${json.messages}`);
         }
@@ -197,7 +250,6 @@ export default function AddProductTab() {
                 autoFocus
               />
             </Grid>
-
             <Grid item xs={12}>
               <TextField
                 name="description"
@@ -247,7 +299,7 @@ export default function AddProductTab() {
             {sizes && sizes.map((value, idx) => {
               return (
                 <React.Fragment key={value}>
-                  <Grid item xs={12}>
+                  <Grid item xs={12} md={10}>
                     <TextField
                       variant="outlined"
                       required
@@ -261,6 +313,17 @@ export default function AddProductTab() {
                         step: "0.01"
                       }}
                     />
+                  </Grid>
+                  <Grid item xs={12} md={2} className={classes.centerButton}>
+                    <Button
+                      type="button"
+                      fullWidth
+                      variant="contained"
+                      color="primary"
+                      onClick={() => removeSize(value)}
+                    >
+                      Remove {value}
+                    </Button>
                   </Grid>
                 </React.Fragment>
               );
