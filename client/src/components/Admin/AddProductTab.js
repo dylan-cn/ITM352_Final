@@ -215,8 +215,9 @@ export default function AddProductTab() {
         if (json.success) {
           setMessage('Sucessfully added product ' + json.doc.name);
           // Reset product form here
-          e.target.reset();
+          form.reset();
           // Reset the sizes buttons
+          setSizes();
           setButtons([...sizeButtons]);
         } else {
           setMessage(`Could not add product: ${json.messages}`);

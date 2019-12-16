@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Button, TextField, Grid, Typography, Container, CircularProgress, Select } from '@material-ui/core';
+import { Button, TextField, Grid, Typography, Container, CircularProgress } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles(theme => ({
@@ -11,6 +11,7 @@ const useStyles = makeStyles(theme => ({
     alignItems: 'center',
   },
   form: {
+    
     width: '100%', // Fix IE 11 issue.
     marginTop: theme.spacing(3),
   },
@@ -234,11 +235,6 @@ export default function Register({ updateAuth }) {
                   error={(messages.password ? true : false)}
                   helperText={messages.password ? messages.password : ''}
                   onFocus={() => deleteMessage('password')}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <Select
-                  id="size"
                 />
               </Grid>
             </Grid>
