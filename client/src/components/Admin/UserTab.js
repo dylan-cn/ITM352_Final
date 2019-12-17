@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Typography, Container, Button, Table, TableBody, TableCell, TableHead, TableRow, CircularProgress, Paper } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
+import { Typography, Container, Button, Table, TableBody, TableCell, TableHead, TableRow, CircularProgress, Paper, InputBase } from '@material-ui/core';
+import { makeStyles, fade } from '@material-ui/core/styles';
+import SearchIcon from '@material-ui/icons/Search';
 
 const useStyles = makeStyles(theme => ({
     paper: {
@@ -14,6 +15,44 @@ const useStyles = makeStyles(theme => ({
         width: '100%',
         overflowX: 'auto',
     },
+    search: {
+        position: 'relative',
+        borderRadius: theme.shape.borderRadius,
+        backgroundColor: fade(theme.palette.common.black, 0.15),
+        '&:hover': {
+            backgroundColor: fade(theme.palette.common.black, 0.25),
+        },
+        marginLeft: 0,
+        width: '100%',
+        [theme.breakpoints.up('sm')]: {
+            marginLeft: theme.spacing(1),
+            width: 'auto',
+        },
+    },
+    searchIcon: {
+        width: theme.spacing(7),
+        height: '100%',
+        position: 'absolute',
+        pointerEvents: 'none',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    inputRoot: {
+        color: 'inherit',
+        width: '100%',
+    },
+    inputInput: {
+        padding: theme.spacing(1, 1, 1, 7),
+        transition: theme.transitions.create('width'),
+        width: '100%',
+        [theme.breakpoints.up('sm')]: {
+            width: 120,
+            '&:focus': {
+                width: 200,
+            },
+        },
+    },
 }));
 
 export default function UserTab() {
@@ -22,6 +61,7 @@ export default function UserTab() {
     const [loading, setLoading] = useState(false);
     const [users, setUsers] = useState([]);
     const [errors, setErrors] = useState();
+    const [searchInput, setSearchInput] = useState(null);
 
     useEffect(() => {
         setLoading(true);
@@ -50,11 +90,29 @@ export default function UserTab() {
             });
     }, []);
 
+    function handleSearchChange(e) {
+        setSearchInput(e.target.value);
+    }
+
     return (
         <>
             <Typography align="center" component="h1" variant="h5">
                 This is the user management tab
             </Typography>
+            <div className={classes.search}>
+                <div className={classes.searchIcon}>
+                    <SearchIcon />
+                </div>
+                <InputBase
+                    placeholder="Search…"
+                    classes={{
+                        root: classes.inputRoot,
+                        input: classes.inputInput,
+                    }}
+                    inputProps={{ 'aria-label': 'search' }}
+                    onChange={handleSearchChange}
+                />
+            </div>
             <Paper className={classes.users}>
                 {loading ? <Typography align="center">Loading...</Typography>
                     : !errors ?
@@ -69,7 +127,15 @@ export default function UserTab() {
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
-                                    {users.map(user => (
+                                    {users
+                                        .filter(elem => { 
+                                            if (searchInput && searchInput.trim().length > 0) {
+                                                return elem.username.toUpperCase().startsWith(searchInput.toUpperCase());
+                                            } else {
+                                                return true;
+                                            }
+                                        })
+                                        .map(user => (
                                         <UserRow key={user._id} userInfo={user} />
                                     ))}
                                 </TableBody>
