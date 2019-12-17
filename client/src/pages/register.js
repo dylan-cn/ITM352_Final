@@ -84,6 +84,7 @@ export default function Register({ updateAuth }) {
       firstName: form.firstName.value,
       lastName: form.lastName.value,
       username: form.username.value,
+      phoneNumber: form.phoneNumber.value,
       email: form.email.value,
       password: form.password.value,
       passwordConfirm: form.passwordConfirm.value
@@ -191,6 +192,20 @@ export default function Register({ updateAuth }) {
                   error={(messages.username ? true : false)}
                   helperText={messages.username ? messages.username : ''}
                   onFocus={() => deleteMessage('username')}
+                />
+              </Grid>
+              <Grid item xs={12}>
+              <TextField
+                  variant="outlined"
+                  required
+                  fullWidth
+                  id="phoneNumber"
+                  label="Phone Number"
+                  name="phoneNumber"
+                  autoComplete="phoneNumber"
+                  error={(messages.phoneNumber ? true : false)}
+                  helperText={messages.phoneNumber ? messages.phoneNumber : ''}
+                  onFocus={() => deleteMessage('phoneNumber')}
                 />
               </Grid>
               <Grid item xs={12}>

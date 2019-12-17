@@ -73,18 +73,18 @@ router.post('/login', (req, res) => {
         });
 });
 
-router.post('/register', (req, res) => {
-    let { firstName, lastName, username, password, passwordConfirm, email } = req.body;
-
-    // Check that all fields are entered
-    if (!firstName || !lastName || !username || !password || !passwordConfirm || !email) {
-        return res.status(400).json({
-            success: false,
-            messages: {
-                general: 'All fields must be entered'
-            }
-        });
+// Phone number validation, sourced from w3resource.com 
+function validatePhoneNumber(inputtxt) {
+    let phoneno = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
+    if (inputtxt.match(phoneno)) {
+        return true;
+    } else {
+        return false;
     }
+}
+
+router.post('/register', (req, res) => {
+    let { firstName, lastName, username, password, passwordConfirm, email, phoneNumber } = req.body;
 
     // Trim all the fields to get rid all white space
     firstName = firstName.trim();
@@ -93,6 +93,17 @@ router.post('/register', (req, res) => {
     password = password.trim();
     passwordConfirm = passwordConfirm.trim();
     email = email.trim();
+    phoneNumber = phoneNumber.trim();
+
+    // Check that all fields are entered
+    if (!firstName || !lastName || !username || !password || !passwordConfirm || !email || !phoneNumber) {
+        return res.status(400).json({
+            success: false,
+            messages: {
+                general: 'All fields must be entered'
+            }
+        });
+    }
 
     let success = false;
     let messages = {};
@@ -101,11 +112,13 @@ router.post('/register', (req, res) => {
     // of thos exist in database
     User.findOne({ $or: [{ email }, { username }] })
         .then(existingUser => {
+
             // new user object
             const newUser = new User({
                 firstName,
                 lastName,
                 username,
+                phoneNumber,
                 password,
                 email
             });
@@ -127,6 +140,10 @@ router.post('/register', (req, res) => {
 
                 if (!emailRegex.test(email)) {
                     messages.email = 'Email format is invalid';
+                }
+
+                if (!validatePhoneNumber(phoneNumber)) {
+                    messages.phoneNumber =  'Phone Number is invalid'
                 }
 
                 // If object is empty at this point, then there were no errors
@@ -170,7 +187,8 @@ router.post('/register', (req, res) => {
                                 firstName,
                                 lastName,
                                 username,
-                                email
+                                email,
+                                phoneNumber
                             },
                             token
                         });
@@ -179,7 +197,7 @@ router.post('/register', (req, res) => {
                     return res.status(500).json({
                         success,
                         messages: {
-                            general: 'Catastrophic error trying to save account to database'
+                            general: 'Catastrophic error trying to save account to database' 
                         }
                     });
                 });
@@ -194,7 +212,7 @@ router.post('/register', (req, res) => {
             return res.status(500).json({
                 success,
                 messages: {
-                    general: 'Catastrophic error trying to create account'
+                    general: 'Catastrophic error trying to create account' 
                 }
             });
         });

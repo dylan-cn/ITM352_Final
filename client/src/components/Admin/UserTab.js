@@ -3,6 +3,7 @@ import { Typography, Container, Button, Table, TableBody, TableCell, TableHead, 
 import { makeStyles, fade } from '@material-ui/core/styles';
 import SearchIcon from '@material-ui/icons/Search';
 
+// CSS styling for components 
 const useStyles = makeStyles(theme => ({
     paper: {
         marginTop: theme.spacing(8),
@@ -55,6 +56,7 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
+// User table container
 export default function UserTab() {
     const classes = useStyles();
 
@@ -63,6 +65,7 @@ export default function UserTab() {
     const [errors, setErrors] = useState();
     const [searchInput, setSearchInput] = useState(null);
 
+    // Fetches users from data base
     useEffect(() => {
         setLoading(true);
         const user = JSON.parse(window.localStorage.getItem('user'));
@@ -90,10 +93,12 @@ export default function UserTab() {
             });
     }, []);
 
+    // Sets date for search queries 
     function handleSearchChange(e) {
         setSearchInput(e.target.value);
     }
 
+    // returns the user tab component 
     return (
         <>
             <Typography align="center" component="h1" variant="h5">
@@ -120,15 +125,16 @@ export default function UserTab() {
                             <Table aria-label="users table">
                                 <TableHead>
                                     <TableRow>
+                                        <TableCell align="center">Promote to Admin</TableCell>
                                         <TableCell align="center">Username</TableCell>
                                         <TableCell align="center">Name</TableCell>
                                         <TableCell align="center">Role</TableCell>
-                                        <TableCell align="center">Promote to Admin</TableCell>
+                                        <TableCell align="center">Phone Number</TableCell>
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
                                     {users
-                                        .filter(elem => { 
+                                        .filter(elem => {
                                             if (searchInput && searchInput.trim().length > 0) {
                                                 return elem.username.toUpperCase().startsWith(searchInput.toUpperCase());
                                             } else {
@@ -136,8 +142,8 @@ export default function UserTab() {
                                             }
                                         })
                                         .map(user => (
-                                        <UserRow key={user._id} userInfo={user} />
-                                    ))}
+                                            <UserRow key={user._id} userInfo={user} />
+                                        ))}
                                 </TableBody>
                             </Table>
                         </Container>
@@ -149,11 +155,13 @@ export default function UserTab() {
     );
 }
 
+// Compenent to create the a user row in the user table 
 function UserRow({ userInfo }) {
     const [user, setUser] = useState({ ...userInfo });
     const [loading, setLoading] = useState(false);
     const [errors, setErrors] = useState();
 
+    // Function to allow promotion or demotion of user
     const setRank = (rank) => (event) => {
         setLoading(true);
         const userData = JSON.parse(window.localStorage.getItem('user'));
@@ -169,7 +177,7 @@ function UserRow({ userInfo }) {
         })
             .then(res => res.json())
             .then(json => {
-                // Registration was a success
+                // Promotion or demotion was a success
                 if (json.success) {
                     setUser(json.user);
                 } else {
@@ -184,11 +192,9 @@ function UserRow({ userInfo }) {
             });
     }
 
+    // Compenent to return user row
     return (
         <TableRow key={user._id}>
-            <TableCell align="center">{user.username}</TableCell>
-            <TableCell align="center">{`${user.firstName} ${user.lastName}`}</TableCell>
-            <TableCell align="center">{user.role}</TableCell>
             <TableCell align="center">
                 {loading && <CircularProgress size={24} />}
 
@@ -204,6 +210,10 @@ function UserRow({ userInfo }) {
                     </Button>
                 }
             </TableCell>
+            <TableCell align="center">{user.username}</TableCell>
+            <TableCell align="center">{`${user.firstName} ${user.lastName}`}</TableCell>
+            <TableCell align="center">{user.role}</TableCell>
+            <TableCell align="center">{user.phoneNumber}</TableCell>
         </TableRow>
     );
 }

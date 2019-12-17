@@ -15,7 +15,7 @@ router.get('/', (req, res) => {
     // Get all users
     User.find()
         // select only the following fields
-        .select(['firstName', 'lastName', 'username', 'role'])
+        .select(['firstName', 'lastName', 'username', 'role', 'phoneNumber'])
         .then(users => {
             return res.status(200).json({
                 success: true,
