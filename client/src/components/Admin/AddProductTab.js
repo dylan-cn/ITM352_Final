@@ -197,7 +197,8 @@ export default function AddProductTab() {
       name: form.name.value,
       description: form.description.value,
       prices,
-      picture: resData.path
+      picture: resData.path,
+      category: form.category.value,
     };
 
     // Send request to register
@@ -276,8 +277,10 @@ export default function AddProductTab() {
                 >
                   <option value={'coffee'}>Coffee</option>
                   <option value={'tea'}>Tea</option>
-                  <option value={'breakfast'}>Breakfast</option>
-                  <option value={'lunch'}>Lunch</option>
+                  <option value={'specialty'}>Specialty Beverages</option>
+                  <option value={'food'}>Food</option>
+                  <option value={'catering'}>Catering</option>
+
                 </Select>
               </FormControl>
             </Grid>

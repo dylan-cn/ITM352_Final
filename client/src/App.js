@@ -21,6 +21,7 @@ import UserTab from './components/Admin/UserTab';
 import AddProductTab from './components/Admin/AddProductTab';
 import NotFound from './pages/NotFound';
 import Products from './pages/Products';
+import Tabss from './pages/ProductsHome';
 
 
 const useStyles = theme => ({
@@ -156,6 +157,7 @@ class App extends React.Component {
               <LoggedInRoute exact path='/login' isAuthenticated={this.state.auth} updateAuth={this.updateAuth} component={Login} />
               <Route exact path='/products/' component={Products} />
               <Route exact path='/' component={Home} />
+              <Route exact path='/test1' component={Tabss} />
               <Route component={NotFound} />
             </Switch>
           </Router>

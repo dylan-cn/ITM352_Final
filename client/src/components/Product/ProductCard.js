@@ -7,6 +7,8 @@ import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
+import Grid from '@material-ui/core/Grid';
+import TextField from '@material-ui/core/TextField';
 import Modal from '@material-ui/core/Modal';
 import { FormControl, InputLabel, Select, Divider } from '@material-ui/core';
 
@@ -39,6 +41,23 @@ export default function ProductCard({ productData }) {
     const handleSelectSize = (e) => {
         console.log(e.target.value)
         setSize(e.target.value);
+    }
+
+    const addToCart = () => {
+        const currCart = JSON.parse(window.localStorage.getItem('cart'));
+
+        if (currCart) {
+            const newCart = [...currCart,
+                {
+                    name: productData.name,
+                    price: prices[size],
+                    size,
+                    quantity: document.getElementById('quantity')
+                }
+            ];
+
+            window.localStorage.setItem('cart', JSON.stringify(newCart));
+        }
     }
 
     return (
@@ -89,35 +108,62 @@ export default function ProductCard({ productData }) {
                                     {productData.description}
                                 </Typography>
 
-                                <FormControl variant="filled" className={classes.formControl} fullWidth>
-                                    <InputLabel htmlFor="filled-age-native-simple">Size</InputLabel>
-                                    <Select
-                                        native
-                                        // value={state.age}
-                                        onChange={handleSelectSize}
-                                        inputProps={{
-                                            name: 'size',
-                                            id: 'size-select',
-                                        }}
-                                        style={{maxWidth: 200}}
-                                    >
-                                        {Object.entries(productData.prices).map(([key, value]) => {
-                                            return (
-                                                <option value={key} key={key + value}>{key}</option>
-                                            );
-                                        })}
-                                    </Select>
-                                </FormControl>
+                                <Grid container spacing={3}>
+                                    <Grid item xs={12} md={6}>
+                                        <FormControl variant="filled" className={classes.formControl} fullWidth>
+                                            <InputLabel htmlFor="filled-age-native-simple">Size</InputLabel>
+                                            <Select
+                                                native
+                                                // value={state.age}
+                                                onChange={handleSelectSize}
+                                                inputProps={{
+                                                    name: 'size',
+                                                    id: 'size-select',
+                                                }}
+                                                style={{ maxWidth: 200 }}
+                                            >
+                                                {Object.entries(productData.prices).map(([key, value]) => {
+                                                    return (
+                                                        <option value={key} key={key + value}>{key}</option>
+                                                    );
+                                                })}
+                                            </Select>
+                                        </FormControl>
+                                    </Grid>
 
-                                <Typography>
-                                    Price: ${prices[size]}
-                                </Typography>
+                                    <Grid item xs={12} md={6} style={{ margin: 'auto' }}>
+                                        <Typography>
+                                            Price: ${prices[size]}
+                                        </Typography>
+                                    </Grid>
+
+                                    <Grid item xs={12}>
+                                        <TextField
+                                            variant="outlined"
+                                            required
+                                            fullWidth
+                                            id="quantity"
+                                            label="Quantity"
+                                            name="quantity"
+                                            autoComplete="quantity"
+                                            inputProps={{
+                                                type: 'number',
+                                                min: '1',
+                                            }}
+                                        />
+                                    </Grid>
+
+                                    <Grid item xs={12}>
+                                        <Button onClick={addToCart}>
+                                            Add to cart
+                                        </Button>
+                                    </Grid>
+                                </Grid>
                             </CardContent>
                         </CardActionArea>
                     </Card>
                 </div>
             </Modal>
-
         </>
     );
 }

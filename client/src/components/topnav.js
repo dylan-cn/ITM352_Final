@@ -45,9 +45,9 @@ const useStyles = makeStyles(theme => ({
     },
     sectionMainMobile: {
         display: 'flex',
-        [theme.breakpoints.up('md')]: {
-            display: 'none',
-        },
+        // [theme.breakpoints.up('md')]: {
+        //     display: 'none',
+        // },
     },
     list: {
         width: 250,
@@ -121,9 +121,14 @@ export default function TopNav({ isAuth, user, updateAuth }) {
             onClose={handleMobileMenuClose}
         >
             {isAuth ?
-                <MenuItem onClick={logout}>
-                    <ListItemText primary='Logout' />
-                </MenuItem>
+                <div>
+                    <MenuItem onClick={logout}>
+                        <ListItemText primary='Logout' />
+                    </MenuItem>
+                    <MenuItem component={Link} to="/cart" onClick={handleMenuClose}>
+                        <ListItemText primary='Cart' />
+                    </MenuItem>
+                </div>
                 :
                 <div>
                     <MenuItem component={Link} to="/register" onClick={handleMenuClose}>
