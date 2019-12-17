@@ -34,6 +34,7 @@ app.use(express.static(path.join(__dirname, '/build')));
 app.use('/api/users', auth, require('./routes/api/users.js'));
 app.use('/api/auth', require('./routes/api/auth.js'));
 app.use('/api/product', auth, require('./routes/api/product'));
+app.use('/api/products', require('./routes/api/products'));
 app.use('/api/upload', auth, require('./routes/api/upload'));
 
 // Handles any requests that don't match the ones above
