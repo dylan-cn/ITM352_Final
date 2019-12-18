@@ -5,16 +5,12 @@ const User = require('../../models/User');
 
 // Route to get all products
 router.post('/', async (req, res) => {
-    const { id, order } = req.body;
-
-    console.log('asdasd');
-    console.log(order)
+    const { order } = req.body;
 
     // Get user from id
     User
-        .find({ _id: id })
+        .findOne({ _id : req.id })
         .then((user) => {
-            console.log(user);
                 const { firstName, lastName, email, username, phoneNumber } = user;
                 // put order into database
                 const newOrder = new Order({
@@ -46,7 +42,7 @@ router.post('/', async (req, res) => {
             console.log(err);
             return res.status(500).json({
                 success: false,
-                messages: err
+                messages: 'Invalid user'
             });
         });
 });
