@@ -53,7 +53,8 @@ router.post('/login', (req, res) => {
                             lastName: existingUser.lastName,
                             username,
                             email: existingUser.email,
-                            role: existingUser.role || 'user'
+                            role: existingUser.role || 'user',
+                            id: existingUser._id
                         },
                         token
                     });

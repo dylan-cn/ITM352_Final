@@ -60,7 +60,7 @@ class Login extends React.Component {
             password: form.password.value,
         };
 
-        // Send request to register
+        // Send request to login
         fetch('/api/auth/login', {
             method: 'POST',
             headers: {
@@ -70,7 +70,7 @@ class Login extends React.Component {
         })
             .then(res => res.json())
             .then(json => {
-                // Registration was a success
+                // login was a success
                 if (json.success) {
                     // Create user to be added to local storage
                     const user = {

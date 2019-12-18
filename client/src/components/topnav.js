@@ -89,6 +89,7 @@ export default function TopNav({ isAuth, user, updateAuth }) {
 
     const logout = () => {
         window.localStorage.removeItem("user");
+        window.localStorage.removeItem('cart');
         if (!window.localStorage.getItem("user")) {
             updateAuth(false);
         }
