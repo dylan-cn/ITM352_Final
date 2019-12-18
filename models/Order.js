@@ -25,6 +25,10 @@ const OrderSchema = new Schema({
     order: {
         type: Array,
         required: true,
+    },
+    location: {
+        type: String,
+        required: true,
     }
 });
 

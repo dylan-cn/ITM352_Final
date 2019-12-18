@@ -3,9 +3,9 @@ const router = express.Router();
 const Order = require('../../models/Order');
 const User = require('../../models/User');
 
-// Route to get all products
+// Route to checkout
 router.post('/', async (req, res) => {
-    const { order } = req.body;
+    const { order, location } = req.body;
 
     // Get user from id
     User
@@ -19,7 +19,8 @@ router.post('/', async (req, res) => {
                     username,
                     email,
                     phoneNumber,
-                    order
+                    order,
+                    location
                 });
 
                 // save order into database

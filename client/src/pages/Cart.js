@@ -57,7 +57,7 @@ export default function Cart() {
                                             <TableCell align="right">{item.size}</TableCell>
                                             <TableCell align="right">{item.price}</TableCell>
                                             <TableCell align="right">{item.quantity}</TableCell>
-                                            <TableCell align="right">{+item.price * + item.quantity}</TableCell>
+                                            <TableCell align="right">${+item.price * + item.quantity}</TableCell>
                                         </TableRow>
                                     )
                                 })}
@@ -86,6 +86,10 @@ export default function Cart() {
                         <br />
 
                     </div>
+
+                    <Typography align="center">
+                        ** Credit card only **
+                    </Typography>
 
                     <Button variant="contained" style={{ float: 'right' }} component={Link} to='/checkout'>
                         Check Out

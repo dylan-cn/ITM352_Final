@@ -1,5 +1,5 @@
-import React from 'react';
-import { Typography, Container, Button } from '@material-ui/core';
+import React, { useEffect } from 'react';
+import { Typography, Container, Button, Grid, TextField, FormControl, InputLabel, Select } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles(theme => ({
@@ -11,13 +11,16 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-function sendOrder() {
+function sendOrder(e) {
+    e.preventDefault();
+
     const { id } = JSON.parse(window.localStorage.getItem('user'));
     const order = JSON.parse(window.localStorage.getItem('cart'));
 
     const orderData = {
         id,
-        order
+        order,
+        location: window.localStorage.getItem("location"),
     }
 
     // send checkout request to server
@@ -45,15 +48,115 @@ function sendOrder() {
             alert("It seems there is a problem with the server, try again later");
         })
 }
+// Function for location
+function handleLocation(e) {
+    window.localStorage.setItem("location", e.target.value)
+}
+
+const locations = { 
+    Kakaako: "685 Auahi St #113, Honolulu, HI 96813", 
+    Kailua: "600 Kailua Rd, Kailua, HI 96734" 
+};
 
 export default function Checkout() {
     const classes = useStyles();
+    useEffect(() => {
+        window.localStorage.setItem("location", Object.keys(locations)[0]);
+    }, []);
 
     return (
         <Container className={classes.paper} component="main">
-            <Button variant="contained" onClick={sendOrder}>
-                Submit order
-            </Button>
+            <Typography component="h1" variant="h5">
+                Checkout
+            </Typography>
+            <Typography>
+                Mockup checkout; no functionality
+            </Typography>
+            <form onSubmit={sendOrder}>
+                <Grid container spacing={2}>
+                    <Grid item xs={12}>
+                        <TextField
+                            autoComplete="name"
+                            name="name"
+                            variant="outlined"
+                            required
+                            fullWidth
+                            id="name"
+                            label="Name"
+                            autoFocus
+                        />
+                    </Grid>
+                    <Grid item xs={12}>
+                        <FormControl variant="filled" className={classes.formControl} fullWidth>
+                            <InputLabel htmlFor="size-select">Pick Up Location</InputLabel>
+                            <Select
+                                native
+                                onChange={handleLocation}
+                                inputProps={{
+                                    name: 'location',
+                                    id: 'location-select',
+                                }}
+                                style={{ height: 50 }}
+                            >
+                                {Object.entries(locations).map(([key, value]) => {
+                                    return (
+                                        <option value={key} key={value+key}>{value}</option>
+                                    );
+                                })}
+                            </Select>
+                        </FormControl>
+                    </Grid>
+                    <Grid item xs={12}>
+                        <TextField
+                            variant="outlined"
+                            required
+                            fullWidth
+                            id="address"
+                            label="Address"
+                            name="address"
+                            autoComplete="address"
+                        />
+                    </Grid>
+                    <Grid item xs={8}>
+                        <TextField
+                            variant="outlined"
+                            required
+                            fullWidth
+                            id="card"
+                            label="Card Number"
+                            name="card"
+                            autoComplete="card"
+                        />
+                    </Grid>
+                    <Grid item xs={2}>
+                        <TextField
+                            variant="outlined"
+                            required
+                            fullWidth
+                            id="expiration-date"
+                            label="Expiration Date"
+                            name="expiration-date"
+                            autoComplete="expiration-date"
+                        />
+                    </Grid>
+                    <Grid item xs={2}>
+                        <TextField
+                            variant="outlined"
+                            required
+                            fullWidth
+                            id="security"
+                            label="Security Code"
+                            name="security"
+                            autoComplete="code"
+                        />
+                    </Grid>
+                </Grid>
+
+                <br />
+                <Button variant="contained" type="submit" style={{ float: 'right' }}>
+                    Submit order
+                </Button>
+            </form>
         </Container>
     );
 }
