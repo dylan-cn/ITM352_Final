@@ -43,18 +43,34 @@ export default function ProductCard({ productData }) {
         setSize(e.target.value);
     }
 
-    const addToCart = () => {
+    const addToCart = (e) => {
+        e.preventDefault();
         const currCart = JSON.parse(window.localStorage.getItem('cart'));
+        const quantity = e.target.quantity.value;
+        const price = prices[size];
 
         if (currCart) {
-            const newCart = [...currCart,
+            const newCart = [
+                ...currCart,
                 {
                     name: productData.name,
-                    price: prices[size],
+                    price,
                     size,
-                    quantity: document.getElementById('quantity')
+                    quantity
                 }
             ];
+
+            window.localStorage.setItem('cart', JSON.stringify(newCart));
+        } else {
+            const newCart = [];
+            newCart.push(
+                {
+                    name: productData.name,
+                    price,
+                    size,
+                    quantity
+                }
+            );
 
             window.localStorage.setItem('cart', JSON.stringify(newCart));
         }
@@ -92,22 +108,22 @@ export default function ProductCard({ productData }) {
             >
                 <div className={classes.paper}>
                     <Card>
-                        <CardActionArea>
-                            <CardMedia
-                                component="img"
-                                alt={productData.name}
-                                image={productData.picture}
-                                title={productData.name}
-                            />
-                            <CardContent>
-                                <Typography gutterBottom variant="h5" component="h2">
-                                    {productData.name}
-                                </Typography>
+                        <CardMedia
+                            component="img"
+                            alt={productData.name}
+                            image={productData.picture}
+                            title={productData.name}
+                        />
+                        <CardContent>
+                            <Typography gutterBottom variant="h5" component="h2">
+                                {productData.name}
+                            </Typography>
 
-                                <Typography variant="body2" color="textSecondary" component="p">
-                                    {productData.description}
-                                </Typography>
+                            <Typography variant="body2" color="textSecondary" component="p">
+                                {productData.description}
+                            </Typography>
 
+                            <form onSubmit={addToCart}>
                                 <Grid container spacing={3}>
                                     <Grid item xs={12} md={6}>
                                         <FormControl variant="filled" className={classes.formControl} fullWidth>
@@ -153,14 +169,15 @@ export default function ProductCard({ productData }) {
                                         />
                                     </Grid>
 
-                                    <Grid item xs={12}>
-                                        <Button onClick={addToCart}>
-                                            Add to cart
-                                        </Button>
-                                    </Grid>
+
                                 </Grid>
-                            </CardContent>
-                        </CardActionArea>
+                                <Grid item xs={12}>
+                                    <Button type="submit">
+                                        Add to cart
+                                    </Button>
+                                </Grid>
+                            </form>
+                        </CardContent>
                     </Card>
                 </div>
             </Modal>

@@ -22,6 +22,7 @@ import AddProductTab from './components/Admin/AddProductTab';
 import NotFound from './pages/NotFound';
 import Products from './pages/Products';
 import Tabss from './pages/ProductsHome';
+import Cart from './pages/Cart';
 
 
 const useStyles = theme => ({
@@ -158,6 +159,7 @@ class App extends React.Component {
               <Route exact path='/products/' component={Products} />
               <Route exact path='/' component={Home} />
               <Route exact path='/test1' component={Tabss} />
+              <Route exact path='/cart' component={Cart} />
               <Route component={NotFound} />
             </Switch>
           </Router>

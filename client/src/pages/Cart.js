@@ -6,6 +6,9 @@ const useStyles = makeStyles(theme => ({
     paper: {
 
     },
+    root: {
+        
+    },
 }));
 
 export default function Cart() {
@@ -15,29 +18,33 @@ export default function Cart() {
 
     return (
         <Container className={classes.root}>
-            {cart &&
+            {cart ?
                 cart.map(item => {
-                    <Typography>
+                    return (
                         <Grid container spacing={3}>
 
-                            <Grid item xs={4}>
-                                item.name
+                            <Grid item xs={3}>
+                                {item.name}
                             </Grid>
 
-                            <Grid item xs={4}>
-                                item.size
+                            <Grid item xs={3}>
+                                {item.size}
                             </Grid>
 
-                            <Grid item xs={4}>
-                                item.price
+                            <Grid item xs={3}>
+                                {item.price}
                             </Grid>
-                    
-                            <Grid item xs={4}>
-                                item.quantity
+
+                            <Grid item xs={3}>
+                                {item.quantity}
                             </Grid>
                         </Grid>
-                    </Typography>
+                    );
                 })
+                :
+                <Typography>
+                    No items in cart
+                </Typography>
             }
         </Container>
     );

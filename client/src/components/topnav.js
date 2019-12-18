@@ -221,7 +221,12 @@ export default function TopNav({ isAuth, user, updateAuth }) {
                         >
                         </IconButton>
                         {isAuth ?
-                            <Button className={classes.menuButton} onClick={logout}>Logout</Button>
+                            <React.Fragment>
+                                <Button className={classes.menuButton} onClick={logout}>Logout</Button>
+                                <MenuItem component={Link} to="/cart" onClick={handleMenuClose}>
+                                    <ListItemText primary='Cart' />
+                                </MenuItem>
+                            </React.Fragment>
                             :
                             <>
                                 <Button className={classes.menuButton} component={Link} to="/register">
