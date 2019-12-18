@@ -60,9 +60,8 @@ export default function Tabss() {
                     onChange={handleChange}
                     indicatorColor="primary"
                     textColor="primary"
-                    centered
                     variant="scrollable"
-                    scrollButtons="auto"
+                    scrollButtons="on"
                 >
                     <Tab label="All" />
                     <Tab label="Coffee" />

@@ -48,17 +48,41 @@ export default function ProductCard({ productData }) {
         const currCart = JSON.parse(window.localStorage.getItem('cart'));
         const quantity = e.target.quantity.value;
         const price = prices[size];
+        const picture = productData.picture;
+
+        const newItem = {
+            name: productData.name,
+            price,
+            size,
+            quantity,
+            picture,
+            options: null
+        };
 
         if (currCart) {
-            const newCart = [
-                ...currCart,
-                {
-                    name: productData.name,
-                    price,
-                    size,
-                    quantity
+            const findDup = currCart.findIndex(item => {
+                return item.name === newItem.name && item.size === newItem.size && item.options == newItem.options;
+            });
+
+            // item already exists in cart
+            // edit existing
+            let newCart = [];
+            if (findDup !== -1) {
+                currCart[findDup] = {
+                    ...currCart[findDup],
+                    quantity: +currCart[findDup].quantity + +newItem.quantity
                 }
-            ];
+
+                newCart = [
+                    ...currCart
+                ];
+            } else {
+
+                newCart = [
+                    ...currCart,
+                    newItem
+                ];
+            }
 
             window.localStorage.setItem('cart', JSON.stringify(newCart));
         } else {
@@ -68,7 +92,8 @@ export default function ProductCard({ productData }) {
                     name: productData.name,
                     price,
                     size,
-                    quantity
+                    quantity,
+                    picture
                 }
             );
 
@@ -125,9 +150,9 @@ export default function ProductCard({ productData }) {
 
                             <form onSubmit={addToCart}>
                                 <Grid container spacing={3}>
-                                    <Grid item xs={12} md={6}>
+                                    <Grid item xs={6}>
                                         <FormControl variant="filled" className={classes.formControl} fullWidth>
-                                            <InputLabel htmlFor="filled-age-native-simple">Size</InputLabel>
+                                            <InputLabel htmlFor="size-select">Size</InputLabel>
                                             <Select
                                                 native
                                                 // value={state.age}
@@ -136,7 +161,7 @@ export default function ProductCard({ productData }) {
                                                     name: 'size',
                                                     id: 'size-select',
                                                 }}
-                                                style={{ maxWidth: 200 }}
+                                                style={{ height: 50 }}
                                             >
                                                 {Object.entries(productData.prices).map(([key, value]) => {
                                                     return (
@@ -145,15 +170,13 @@ export default function ProductCard({ productData }) {
                                                 })}
                                             </Select>
                                         </FormControl>
-                                    </Grid>
 
-                                    <Grid item xs={12} md={6} style={{ margin: 'auto' }}>
-                                        <Typography>
+                                        <Typography variant="h6" component="h6">
                                             Price: ${prices[size]}
                                         </Typography>
                                     </Grid>
 
-                                    <Grid item xs={12}>
+                                    <Grid item xs={6}>
                                         <TextField
                                             variant="outlined"
                                             required
@@ -167,14 +190,11 @@ export default function ProductCard({ productData }) {
                                                 min: '1',
                                             }}
                                         />
+
+                                        <Button variant="contained" fullWidth color="primary" type="submit">
+                                            Add to cart
+                                        </Button>
                                     </Grid>
-
-
-                                </Grid>
-                                <Grid item xs={12}>
-                                    <Button type="submit">
-                                        Add to cart
-                                    </Button>
                                 </Grid>
                             </form>
                         </CardContent>
