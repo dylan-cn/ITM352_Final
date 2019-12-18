@@ -37,6 +37,7 @@ app.use('/api/product', auth, require('./routes/api/product'));
 app.use('/api/products', require('./routes/api/products'));
 app.use('/api/upload', auth, require('./routes/api/upload'));
 app.use('/api/checkout', auth, require('./routes/api/checkout'));
+app.use('/api/orders', auth, require('./routes/api/orders'));
 
 // Handles any requests that don't match the ones above
 app.get('*', (req,res) =>{

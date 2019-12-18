@@ -24,6 +24,7 @@ import Products from './pages/Products';
 import Tabss from './pages/ProductsHome';
 import Cart from './pages/Cart';
 import Checkout from './pages/Checkout';
+import ManageOrders from './pages/ManageOrders';
 
 
 const useStyles = theme => ({
@@ -155,6 +156,7 @@ class App extends React.Component {
               <AdminRoute exact path='/adminpanel' component={AdminPanel} isAuthenticated={this.state.auth} role={this.state.user.role} />
               <AdminRoute exact path='/admin/users' component={UserTab} isAuthenticated={this.state.auth} role={this.state.user.role} />
               <AdminRoute exact path='/admin/addproduct' component={AddProductTab} isAuthenticated={this.state.auth} role={this.state.user.role} />
+              <AdminRoute exact path='/admin/manageorders' component={ManageOrders} isAuthenticated={this.state.auth} role={this.state.user.role} />
               <LoggedInRoute exact path='/register' isAuthenticated={this.state.auth} updateAuth={this.updateAuth} component={Register} />
               <LoggedInRoute exact path='/login' isAuthenticated={this.state.auth} updateAuth={this.updateAuth} component={Login} />
               <PrivateRoute exact path='/checkout' isAuthenticated={this.state.auth} component={Checkout} />
