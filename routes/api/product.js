@@ -1,7 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const Product = require('../../models/Product');
-
+const path = require('path');
+const fs = require('fs');
+    
 // Route to add product
 router.post('/add', (req, res) => {
     // Make sure request is coming from an admin role
@@ -63,6 +65,39 @@ router.get('/', (req, res) => {
             return res.status(200).json({
                 success: true,
                 products
+            });
+        })
+        .catch(err => {
+            return res.status(500).json({
+                success: false,
+                message: err,
+            });
+        });
+});
+
+// Route to delete product
+router.delete('/', (req, res) => {
+    // Delete product
+    Product
+        .deleteOne({ _id: req.body.productId })
+        .then(product => {
+            const path = req.workingDirectory + "/public" + req.body.picture;
+
+            try {
+                fs.unlinkSync(path);
+            } catch (err) {
+
+                console.log(err);
+                console.log(path);
+                return res.status(500).json({
+                    success: false,
+                    message: err,
+                });
+            }
+
+            return res.status(200).json({
+                success: true,
+                product
             });
         })
         .catch(err => {
