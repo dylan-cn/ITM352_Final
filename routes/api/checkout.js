@@ -20,7 +20,7 @@ router.post('/', async (req, res) => {
                     email,
                     phoneNumber,
                     order,
-                    location
+                    location,
                 });
 
                 // save order into database

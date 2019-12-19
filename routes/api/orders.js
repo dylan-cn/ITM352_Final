@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Order = require('../../models/Order');
 
-// Gets all orders
+// Admin Gets all orders
 router.get('/', (req, res) => {
     // Make sure request is coming from an admin role
     if (req.role !== 'admin') {
@@ -16,6 +16,24 @@ router.get('/', (req, res) => {
     Order.find()
         .then(orders => {
             console.log(orders);
+            return res.status(200).json({
+                success: true,
+                orders
+            });
+        })
+        .catch(err => {
+            return res.status(500).json({
+                success: false,
+                message: err,
+            });
+        });
+});
+
+// Gets all user orders
+router.get('/userorders', (req, res) => {
+    // Get all orders, filtered by username (unique key)
+    Order.find({ username: req.username })
+        .then(orders => {
             return res.status(200).json({
                 success: true,
                 orders

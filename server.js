@@ -65,6 +65,7 @@ function auth(req, res, next) {
 
         // Add user from jwt
         req.id = decode.id;
+        req.username = decode.username;
         req.role = decode.role;
         req.workingDirectory = __dirname;
         next();

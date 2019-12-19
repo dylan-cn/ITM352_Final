@@ -15,6 +15,7 @@ import AnnouncementIcon from '@material-ui/icons/Announcement';
 import AddIcon from '@material-ui/icons/Add';
 import PersonIcon from '@material-ui/icons/Person';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import ListAltIcon from '@material-ui/icons/ListAlt';
 
 const useStyles = makeStyles(theme => ({
     grow: {
@@ -173,6 +174,10 @@ export default function TopNav({ isAuth, user, updateAuth }) {
                 {user.role === 'admin' &&
                     <>
                         <Divider />
+                        <ListItem button component={Link} to='/admin/orders'>
+                            <ListItemIcon><ListAltIcon /></ListItemIcon>
+                            <ListItemText primary='Order Management' />
+                        </ListItem>
                         <ListItem button component={Link} to='/admin/addproduct'>
                             <ListItemIcon><AddIcon /></ListItemIcon>
                             <ListItemText primary='Add Product' />

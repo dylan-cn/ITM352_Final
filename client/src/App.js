@@ -25,6 +25,7 @@ import Tabss from './pages/ProductsHome';
 import Cart from './pages/Cart';
 import Checkout from './pages/Checkout';
 import ManageOrders from './pages/ManageOrders';
+import MyOrders from './pages/MyOrders';
 
 
 const useStyles = theme => ({
@@ -161,6 +162,7 @@ class App extends React.Component {
               <LoggedInRoute exact path='/login' isAuthenticated={this.state.auth} updateAuth={this.updateAuth} component={Login} />
               <PrivateRoute exact path='/checkout' isAuthenticated={this.state.auth} component={Checkout} />
               <PrivateRoute exact path='/cart' isAuthenticated={this.state.auth} component={Cart} />
+              <PrivateRoute exact path='/myorders' isAuthenticated={this.state.auth} component={MyOrders} />
               <Route exact path='/products/' component={Products} />
               <Route exact path='/' component={Home} />
               <Route exact path='/test1' component={Tabss} />

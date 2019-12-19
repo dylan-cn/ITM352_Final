@@ -37,7 +37,7 @@ router.post('/login', (req, res) => {
             if (passwordValidation) {
                 // assign jwt to user
                 const role = existingUser.role || 'user';
-                jwt.sign({ id: existingUser.id, role }, jwtSecret, (err, token) => {
+                jwt.sign({ id: existingUser.id, role, username: existingUser.username }, jwtSecret, (err, token) => {
                     if (err) {
                         return res.status(500).json({
                             success: false,
@@ -169,7 +169,7 @@ router.post('/register', (req, res) => {
                 // Save user to database
                 newUser.save().then(user => {
                     const role = user.role || 'user';
-                    jwt.sign({ id: user.id, role }, jwtSecret, (err, token) => {
+                    jwt.sign({ id: user.id, role, username: user.username }, jwtSecret, (err, token) => {
                         if (err) {
                             return res.status(500).json({
                                 success: false,

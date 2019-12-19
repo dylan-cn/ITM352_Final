@@ -74,7 +74,7 @@ export default function AlignItemsList() {
       <Grid container spacing={3}>
         <Grid item xs={12} sm={6}>
           <FormControl variant="filled" className={classes.formControl} fullWidth>
-            <InputLabel htmlFor="status-select">Size</InputLabel>
+            <InputLabel htmlFor="status-select">Status</InputLabel>
             <Select
               native
               // value={state.age}
