@@ -41,7 +41,7 @@ function sendOrder(e) {
 
                 alert("You order has been sent");
             } else {
-                alert("There was an error: " + json.errors);
+                alert("There was an error");
             }
         })
         .catch(err => {
