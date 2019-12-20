@@ -114,10 +114,7 @@ class App extends React.Component {
   // Verify the user on mount
   componentDidMount() {
     this.setState({ loadingUser: true });
-    // simulate a long request
-    setTimeout(() => {
-      this.processUser();
-    }, 1000);
+    this.processUser();
   }
 
   // Allow child components to update auth status

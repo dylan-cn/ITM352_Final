@@ -88,6 +88,9 @@ export default function AddProductTab() {
         ].filter(i => i !== 'One Size'));
         setButtons([...sizeButtons]);
         break;
+
+      default:
+        break;
     }
   }
 

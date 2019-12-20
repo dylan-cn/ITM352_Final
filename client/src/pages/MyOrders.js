@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { Paper, Table, TableBody, TableCell, TableHead, TableRow, CircularProgress, Button, Container, Grid, FormControl, Select, InputLabel } from '@material-ui/core';
+import { Paper, Table, TableBody, TableCell, TableHead, TableRow, CircularProgress, Container, Grid, FormControl, Select, InputLabel } from '@material-ui/core';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import Divider from '@material-ui/core/Divider';
@@ -153,9 +153,8 @@ export default function AlignItemsList() {
 function OrderRow({ orderInfo }) {
     const classes = useStyles();
 
-    const [order, setOrder] = useState({ ...orderInfo });
+    const [order] = useState({ ...orderInfo });
     const [loading, setLoading] = useState(false);
-    const [errors, setErrors] = useState();
 
     // Compenent to return user row
     return (

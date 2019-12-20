@@ -5,8 +5,6 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import Divider from '@material-ui/core/Divider';
 import ListItemText from '@material-ui/core/ListItemText';
-import ListItemAvatar from '@material-ui/core/ListItemAvatar';
-import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
 
 const useStyles = makeStyles(theme => ({
@@ -195,7 +193,7 @@ function OrderRow({ orderInfo }) {
       });
   }
 
-  // Compenent to return user row
+  // Component to return user row
   return (
     <TableRow>
       <TableCell align="center">{new Date(order.date).toString() || "N/A"}</TableCell>
@@ -241,7 +239,7 @@ function OrderRow({ orderInfo }) {
                     />
                   </ListItem>
 
-                  <Divider/>
+                  <Divider />
 
                 </div>
               );

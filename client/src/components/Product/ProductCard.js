@@ -76,7 +76,7 @@ export default function ProductCard({ productData }) {
         if (currCart) {
             // If already have a cart, check for duplicate items
             const findDup = currCart.findIndex(item => {
-                return item.name === newItem.name && item.size === newItem.size && item.options == newItem.options;
+                return item.name === newItem.name && item.size === newItem.size && item.options === newItem.options;
             });
 
             // item already exists in cart

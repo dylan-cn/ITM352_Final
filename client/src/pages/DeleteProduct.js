@@ -156,7 +156,7 @@ export default function DeleteProduct() {
 
 // Compenent to create the a user row in the user table 
 function ProductRow({ productInfo }) {
-    const [product, setProduct] = useState({ ...productInfo });
+    const [product] = useState({ ...productInfo });
     const [deleted, setDeleted] = useState(false);
     const [loading, setLoading] = useState(false);
     const [errors, setErrors] = useState();
@@ -173,7 +173,7 @@ function ProductRow({ productInfo }) {
                 'Content-Type': 'application/json',
                 'x-auth-token': userData.token
             },
-            body: JSON.stringify({ 
+            body: JSON.stringify({
                 productId: id,
                 picture: productInfo.picture
             })
