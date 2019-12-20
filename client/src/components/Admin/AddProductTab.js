@@ -190,7 +190,7 @@ export default function AddProductTab() {
     // Config for Axios file upload
     const config = {
       onUploadProgress: function (progressEvent) {
-        var percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
+        //var percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
         //console.log(percentCompleted)
       },
       headers: {

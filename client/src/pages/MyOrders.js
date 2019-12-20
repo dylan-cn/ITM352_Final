@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { Paper, Table, TableBody, TableCell, TableHead, TableRow, CircularProgress, Container, Grid, FormControl, Select, InputLabel } from '@material-ui/core';
+import { Paper, Table, TableBody, TableCell, TableHead, TableRow, Container, Grid, FormControl, Select, InputLabel } from '@material-ui/core';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import Divider from '@material-ui/core/Divider';
@@ -149,27 +149,24 @@ export default function AlignItemsList() {
     );
 }
 
-// Compenent to create the a user row in the user table 
+// Component to create the an order row in the order table 
 function OrderRow({ orderInfo }) {
     const classes = useStyles();
 
     const [order] = useState({ ...orderInfo });
-    const [loading, setLoading] = useState(false);
 
-    // Compenent to return user row
+    // Component to return an order row
     return (
         <TableRow>
             <TableCell align="center">{new Date(order.date).toString() || "N/A"}</TableCell>
             <TableCell align="center">
-                {loading && <CircularProgress size={24} />}
-
-                {!order.finished && !loading &&
+                {!order.finished &&
                     <Typography>
                         <strong>Not Done</strong>
                     </Typography>
                 }
 
-                {order.finished && !loading &&
+                {order.finished &&
                     <Typography>
                         <strong>Done</strong>
                     </Typography>

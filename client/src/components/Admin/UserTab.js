@@ -159,7 +159,7 @@ export default function UserTab() {
 function UserRow({ userInfo }) {
     const [user, setUser] = useState({ ...userInfo });
     const [loading, setLoading] = useState(false);
-    const [errors, setErrors] = useState();
+    //const [errors, setErrors] = useState();
 
     // Function to allow promotion or demotion of user
     const setRank = (rank) => (event) => {
@@ -181,11 +181,13 @@ function UserRow({ userInfo }) {
                 if (json.success) {
                     setUser(json.user);
                 } else {
-                    setErrors('Could not update record');
+                    //setErrors('Could not update record');
+                    alert('Could not update user rank');
                 }
             })
             .catch(err => {
-                setErrors('Database error');
+                //setErrors('Database error');
+                alert('Database error: could not update user rank');
             })
             .finally(() => {
                 setLoading(false);

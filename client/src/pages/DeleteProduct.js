@@ -159,7 +159,7 @@ function ProductRow({ productInfo }) {
     const [product] = useState({ ...productInfo });
     const [deleted, setDeleted] = useState(false);
     const [loading, setLoading] = useState(false);
-    const [errors, setErrors] = useState();
+    //const [errors, setErrors] = useState();
 
     // Function to allow promotion or demotion of user
     const deleteProduct = (id) => (event) => {
@@ -184,11 +184,13 @@ function ProductRow({ productInfo }) {
                 if (json.success) {
                     setDeleted(true);
                 } else {
-                    setErrors('Could not update record');
+                    //setErrors('Could not update record');
+                    alert('Failed to delete product record');
                 }
             })
             .catch(err => {
-                setErrors('Database error');
+                //setErrors('Database error');
+                alert('Database failured: failed to delete product record');
             })
             .finally(() => {
                 setLoading(false);

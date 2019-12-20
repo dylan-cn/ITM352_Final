@@ -160,9 +160,9 @@ function OrderRow({ orderInfo }) {
 
   const [order, setOrder] = useState({ ...orderInfo });
   const [loading, setLoading] = useState(false);
-  const [errors, setErrors] = useState();
+  //const [errors, setErrors] = useState();
 
-  // Function to allow promotion or demotion of user
+  // Sets the status of an order
   const setStatus = (status) => (event) => {
     setLoading(true);
     const userData = JSON.parse(window.localStorage.getItem('user'));
@@ -182,11 +182,13 @@ function OrderRow({ orderInfo }) {
         if (json.success) {
           setOrder(json.order);
         } else {
-          setErrors('Could not update order record');
+          //setErrors('Could not update order record');
+          alert('Could not update order status record');
         }
       })
       .catch(err => {
-        setErrors('Database error');
+        //setErrors('Database error');
+        alert('Database error: could not update order status record');
       })
       .finally(() => {
         setLoading(false);
