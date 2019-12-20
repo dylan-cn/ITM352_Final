@@ -9,6 +9,7 @@ import AppBar from '@material-ui/core/AppBar';
 import ProductCard from '../components/Product/ProductCard';
 import Typography from '@material-ui/core/Typography';
 import PropTypes from 'prop-types';
+import Container from '@material-ui/core/Container';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -54,7 +55,7 @@ export default function Tabss() {
                 }
             })
             .catch(err => {
-                setErrors('Could not retrieve products from database...');
+                setErrors('Could not retrieve products from database...\n' + err);
             })
             .finally(() => {
                 setIsLoading(false);
@@ -63,50 +64,52 @@ export default function Tabss() {
 
     return (
         <Paper className={classes.root}>
-            <AppBar position="static" color="default">
-                <Tabs
-                    value={value}
-                    onChange={handleChange}
-                    indicatorColor="secondary"
-                    textColor="primary"
-                    variant="scrollable"
-                    scrollButtons="on"
-                >
-                    {
-                        categories.map(item => {
-                            return <Tab key={item} label={item} />
-                        })
-                    }
-                </Tabs>
-            </AppBar>
+            <Container>
+                <AppBar position="static" color="default">
+                    <Tabs
+                        value={value}
+                        onChange={handleChange}
+                        indicatorColor="secondary"
+                        textColor="primary"
+                        variant="scrollable"
+                        scrollButtons="on"
+                    >
+                        {
+                            categories.map(item => {
+                                return <Tab key={item} label={item} />
+                            })
+                        }
+                    </Tabs>
+                </AppBar>
 
-            {
-                categories.map((category, idx) => {
-                    return (
-                        <TabPanel value={value} index={idx} key={idx}>
-                            {products &&
-                                <Grid container spacing={3}>
-                                    {products
-                                        .filter(product => {
-                                            if (category.toLowerCase() === 'all') {
-                                                return true;
-                                            } else {
-                                                return product.category.toLowerCase() === category.toLowerCase();
-                                            }
-                                        })
-                                        .map((item, idx) => {
-                                            return (
-                                                <Grid item xs={6} md={4} key={idx + item}>
-                                                    <ProductCard productData={item} key={item._id} />
-                                                </Grid>
-                                            );
-                                        })}
-                                </Grid>
-                            }
-                        </TabPanel>
-                    )
-                })
-            }
+                {
+                    categories.map((category, idx) => {
+                        return (
+                            <TabPanel value={value} index={idx} key={idx}>
+                                {products &&
+                                    <Grid container spacing={3}>
+                                        {products
+                                            .filter(product => {
+                                                if (category.toLowerCase() === 'all') {
+                                                    return true;
+                                                } else {
+                                                    return product.category.toLowerCase() === category.toLowerCase();
+                                                }
+                                            })
+                                            .map((item, idx) => {
+                                                return (
+                                                    <Grid item xs={6} md={4} key={idx + item}>
+                                                        <ProductCard productData={item} key={item._id} />
+                                                    </Grid>
+                                                );
+                                            })}
+                                    </Grid>
+                                }
+                            </TabPanel>
+                        )
+                    })
+                }
+            </Container>
         </Paper>
     );
 }

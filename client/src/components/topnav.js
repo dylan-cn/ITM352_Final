@@ -11,11 +11,13 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import HomeIcon from '@material-ui/icons/Home';
-import AnnouncementIcon from '@material-ui/icons/Announcement';
 import AddIcon from '@material-ui/icons/Add';
 import PersonIcon from '@material-ui/icons/Person';
 import ListAltIcon from '@material-ui/icons/ListAlt';
 import StoreIcon from '@material-ui/icons/Store';
+import BorderColorIcon from '@material-ui/icons/BorderColor';
+import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
+import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 
 const useStyles = makeStyles(theme => ({
     grow: {
@@ -63,16 +65,10 @@ const useStyles = makeStyles(theme => ({
 
 export default function TopNav({ isAuth, user, updateAuth }) {
     const classes = useStyles();
-    const [anchorEl, setAnchorEl] = React.useState(null);
     const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
-    const [mobileMainAnchor, setmobileMainAnchor] = React.useState(null);
 
     //const isMenuOpen = Boolean(anchorEl);
     const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
-
-    const handleProfileMenuOpen = event => {
-        setAnchorEl(event.currentTarget);
-    };
 
     const handleMobileMenuClose = () => {
         setMobileMoreAnchorEl(null);
@@ -84,7 +80,6 @@ export default function TopNav({ isAuth, user, updateAuth }) {
 
 
     const handleMenuClose = () => {
-        setAnchorEl(null);
         handleMobileMenuClose();
     };
 
@@ -96,20 +91,6 @@ export default function TopNav({ isAuth, user, updateAuth }) {
         }
         handleMenuClose();
     }
-
-    const menuId = 'primary-search-account-menu';
-    // const renderMenu = (
-    //     <Menu
-    //         anchorEl={anchorEl}
-    //         anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-    //         id={menuId}
-    //         keepMounted
-    //         transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-    //         open={isMenuOpen}
-    //         onClose={handleMenuClose}
-    //     >
-    //     </Menu>
-    // );
 
     const mobileMenuId = 'primary-search-account-menu-mobile';
     const renderMobileMenu = (
@@ -168,15 +149,25 @@ export default function TopNav({ isAuth, user, updateAuth }) {
                         <ListItemIcon><HomeIcon /></ListItemIcon>
                         <ListItemText primary='Home' />
                     </ListItem>
-                    <ListItem button component={Link} to='/test'>
-                        <ListItemIcon><AnnouncementIcon /></ListItemIcon>
-                        <ListItemText primary='Test' />
-                    </ListItem>
                     <ListItem button component={Link} to='/products'>
                         <ListItemIcon><StoreIcon /></ListItemIcon>
                         <ListItemText primary='Products' />
                     </ListItem>
                 </List>
+
+                {user.role &&
+                    <>
+                        <Divider />
+                        <ListItem button component={Link} to='/myorders'>
+                            <ListItemIcon><BorderColorIcon /></ListItemIcon>
+                            <ListItemText primary='My Orders' />
+                        </ListItem>
+                        <ListItem button component={Link} to='/cart'>
+                            <ListItemIcon><ShoppingCartIcon /></ListItemIcon>
+                            <ListItemText primary='Cart' />
+                        </ListItem>
+                    </>
+                }
 
                 {user.role === 'admin' &&
                     <>
@@ -188,6 +179,10 @@ export default function TopNav({ isAuth, user, updateAuth }) {
                         <ListItem button component={Link} to='/admin/addproduct'>
                             <ListItemIcon><AddIcon /></ListItemIcon>
                             <ListItemText primary='Add Product' />
+                        </ListItem>
+                        <ListItem button component={Link} to='/admin/deleteproduct'>
+                            <ListItemIcon><DeleteForeverIcon /></ListItemIcon>
+                            <ListItemText primary='Delete Product' />
                         </ListItem>
                         <ListItem button component={Link} to='/admin/users'>
                             <ListItemIcon><PersonIcon /></ListItemIcon>
@@ -224,15 +219,6 @@ export default function TopNav({ isAuth, user, updateAuth }) {
                         </Typography>
                     }
                     <div className={classes.sectionDesktop}>
-                        <IconButton
-                            edge="end"
-                            aria-label="account of current user"
-                            aria-controls={menuId}
-                            aria-haspopup="true"
-                            onClick={handleProfileMenuOpen}
-                            color="inherit"
-                        >
-                        </IconButton>
                         {isAuth ?
                             <React.Fragment>
                                 <Button className={classes.menuButton} onClick={logout}>Logout</Button>

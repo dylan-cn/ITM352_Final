@@ -9,7 +9,6 @@ import { LoggedInRoute } from './helper/LoggedInRoute';
 import { AdminRoute } from './helper/AdminRoute';
 import Register from './pages/register';
 import TopNav from './components/topnav';
-import Test from './pages/test';
 import Login from './pages/login';
 import Home from './pages/home';
 import { AuthProvider } from './context/AuthContext';
@@ -153,7 +152,6 @@ class App extends React.Component {
           <Router>
             <TopNav isAuth={this.state.auth} user={this.state.user} updateAuth={this.updateAuth} />
             <Switch>
-              <PrivateRoute path='/test' component={Test} isAuthenticated={this.state.auth} />
               <AdminRoute exact path='/admin/users' component={UserTab} isAuthenticated={this.state.auth} role={this.state.user.role} />
               <AdminRoute exact path='/admin/addproduct' component={AddProductTab} isAuthenticated={this.state.auth} role={this.state.user.role} />
               <AdminRoute exact path='/admin/deleteproduct' component={DeleteProduct} isAuthenticated={this.state.auth} role={this.state.user.role} />
