@@ -86,9 +86,6 @@ router.delete('/', (req, res) => {
             try {
                 fs.unlinkSync(path);
             } catch (err) {
-
-                console.log(err);
-                console.log(path);
                 return res.status(500).json({
                     success: false,
                     message: err,

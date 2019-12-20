@@ -61,6 +61,11 @@ const useStyles = makeStyles(theme => ({
     navbar: {
         marginBottom: theme.spacing(2),
     },
+    brand: {
+        fontFamily: ['Open Sans Condensed', 'sans-serif'].join(','),
+        fontSize: 40,
+        fontWeight: 700
+    },
 }));
 
 export default function TopNav({ isAuth, user, updateAuth }) {
@@ -209,8 +214,8 @@ export default function TopNav({ isAuth, user, updateAuth }) {
                             <MenuIcon />
                         </IconButton>
                     </div>
-                    <Typography variant="h6" noWrap>
-                        App Template
+                    <Typography className = {classes.brand} variant="h6" noWrap>
+                        Morning Brew
                     </Typography>
                     <div className={classes.grow} />
                     {isAuth && user &&
