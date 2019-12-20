@@ -127,6 +127,9 @@ export default function TopNav({ isAuth, user, updateAuth }) {
                     <MenuItem onClick={logout}>
                         <ListItemText primary='Logout' />
                     </MenuItem>
+                    <MenuItem component={Link} to="/cart" onClick={handleMenuClose}>
+                        <ListItemText primary='Cart' />
+                    </MenuItem>
                 </div>
                 :
                 <div>

@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
-import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
@@ -10,7 +9,7 @@ import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
 import Modal from '@material-ui/core/Modal';
-import { FormControl, InputLabel, Select, Divider } from '@material-ui/core';
+import { FormControl, InputLabel, Select } from '@material-ui/core';
 
 const useStyles = makeStyles(theme => ({
     card: {
@@ -31,20 +30,35 @@ export default function ProductCard({ productData }) {
     const classes = useStyles();
 
     const [open, setOpen] = useState(false);
-    const [prices, setPrices] = useState(productData.prices);
+    const [prices] = useState(productData.prices);
     const [size, setSize] = useState(Object.keys(prices)[0]);
 
+    // Set open or close state for product modal
     const handleModal = () => {
         setOpen(prevState => !prevState);
     }
 
+    // Changes sizes and prices
     const handleSelectSize = (e) => {
-        console.log(e.target.value)
         setSize(e.target.value);
     }
 
+    // Alert the user if adding item to cart was successful or not
+    const sendCartMessage = (item, success) => {
+        if (success) {
+            alert(`Added ${item.quantity} ${item.name} to cart`);
+            handleModal();
+        } else {
+            alert(`Could not add ${item.quantity} ${item.name} to cart`);
+        }
+    }
+
+    // Add item to cart
+    // Localstorage
     const addToCart = (e) => {
+        // prevent the form from submitting
         e.preventDefault();
+
         const currCart = JSON.parse(window.localStorage.getItem('cart'));
         const quantity = e.target.quantity.value;
         const price = prices[size];
@@ -60,6 +74,7 @@ export default function ProductCard({ productData }) {
         };
 
         if (currCart) {
+            // If already have a cart, check for duplicate items
             const findDup = currCart.findIndex(item => {
                 return item.name === newItem.name && item.size === newItem.size && item.options == newItem.options;
             });
@@ -77,15 +92,19 @@ export default function ProductCard({ productData }) {
                     ...currCart
                 ];
             } else {
-
+                // Item does not exist in cart, so just append to array
                 newCart = [
                     ...currCart,
                     newItem
                 ];
             }
 
+            // set the cart in localstorage
             window.localStorage.setItem('cart', JSON.stringify(newCart));
+
+            sendCartMessage(newItem, true);
         } else {
+            // Create new cart
             const newCart = [];
             newCart.push(
                 {
@@ -97,7 +116,10 @@ export default function ProductCard({ productData }) {
                 }
             );
 
+            // set cart in localstorage
             window.localStorage.setItem('cart', JSON.stringify(newCart));
+
+            sendCartMessage(newItem, true);
         }
     }
 
