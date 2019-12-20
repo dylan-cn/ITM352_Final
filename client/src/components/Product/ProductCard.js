@@ -59,7 +59,8 @@ export default function ProductCard({ productData }) {
         // prevent the form from submitting
         e.preventDefault();
 
-        const currCart = JSON.parse(window.localStorage.getItem('cart'));
+        const temp = JSON.parse(window.localStorage.getItem('cart'));
+        const currCart = temp ? temp.cart : null;
         const quantity = e.target.quantity.value;
         const price = prices[size];
         const picture = productData.picture;
@@ -74,9 +75,19 @@ export default function ProductCard({ productData }) {
         };
 
         if (currCart) {
+            if (temp.type.toLowerCase() === 'catering' && productData.category !== 'catering') {
+                alert('You cannot mix catering items with non-catering items');
+                return;
+            }
+
+            if (temp.type.toLowerCase() !== 'catering' && productData.category === 'catering') {
+                alert('You cannot mix catering items with non-catering items');
+                return;
+            }
+
             // If already have a cart, check for duplicate items
             const findDup = currCart.findIndex(item => {
-                return item.name === newItem.name && item.size === newItem.size && item.options === newItem.options;
+                return item.name === newItem.name && item.size === newItem.size && item.options == newItem.options;
             });
 
             // item already exists in cart
@@ -100,7 +111,8 @@ export default function ProductCard({ productData }) {
             }
 
             // set the cart in localstorage
-            window.localStorage.setItem('cart', JSON.stringify(newCart));
+            const tempCart = JSON.parse(window.localStorage.getItem('cart'));
+            window.localStorage.setItem('cart', JSON.stringify({ ...tempCart, cart: newCart }));
 
             sendCartMessage(newItem, true);
         } else {
@@ -116,8 +128,10 @@ export default function ProductCard({ productData }) {
                 }
             );
 
-            // set cart in localstorage
-            window.localStorage.setItem('cart', JSON.stringify(newCart));
+            const type = productData.category.toLowerCase() === 'catering' ? 'catering' : 'all';
+
+            // set cart in localstorage, assign type of cart
+            window.localStorage.setItem('cart', JSON.stringify({ type, cart: newCart }));
 
             sendCartMessage(newItem, true);
         }

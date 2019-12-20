@@ -15,7 +15,7 @@ router.get('/', (req, res) => {
     // Get all orders
     Order.find()
         .then(orders => {
-            console.log(orders);
+            //console.log(orders);
             return res.status(200).json({
                 success: true,
                 orders

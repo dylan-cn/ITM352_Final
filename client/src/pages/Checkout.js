@@ -16,7 +16,7 @@ function sendOrder(e) {
     e.preventDefault();
 
     const { id } = JSON.parse(window.localStorage.getItem('user'));
-    const order = JSON.parse(window.localStorage.getItem('cart'));
+    const order = JSON.parse(window.localStorage.getItem('cart')).cart;
 
     const orderData = {
         id,
@@ -69,7 +69,8 @@ export default function Checkout() {
         window.localStorage.setItem("location", Object.keys(locations)[0]);
     }, []);
 
-    const cart = JSON.parse(window.localStorage.getItem('cart'));
+    const temp = JSON.parse(window.localStorage.getItem('cart'));
+    const cart = temp ? temp.cart : null;
 
     return (
         <Container className={classes.paper} component="main">
