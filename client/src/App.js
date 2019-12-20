@@ -3,8 +3,6 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import './App.css';
 import { CssBaseline, CircularProgress, Container } from '@material-ui/core';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
-import pink from '@material-ui/core/colors/pink';
-import green from '@material-ui/core/colors/green';
 import { withStyles } from '@material-ui/core/styles';
 import { PrivateRoute } from './helper/PrivateRoute';
 import { LoggedInRoute } from './helper/LoggedInRoute';
@@ -14,13 +12,11 @@ import TopNav from './components/topnav';
 import Test from './pages/test';
 import Login from './pages/login';
 import Home from './pages/home';
-import AdminPanel from './pages/AdminPanel';
 import { AuthProvider } from './context/AuthContext';
 import { blue } from '@material-ui/core/colors';
 import UserTab from './components/Admin/UserTab';
 import AddProductTab from './components/Admin/AddProductTab';
 import NotFound from './pages/NotFound';
-import Products from './pages/Products';
 import ProductsHome from './pages/ProductsHome';
 import Cart from './pages/Cart';
 import Checkout from './pages/Checkout';
@@ -42,6 +38,9 @@ const useStyles = theme => ({
     left: '50%',
     marginTop: -32,
     marginLeft: -32,
+  },
+  footer: {
+    marginTop: theme.spacing(8),
   },
 });
 
@@ -155,7 +154,6 @@ class App extends React.Component {
             <TopNav isAuth={this.state.auth} user={this.state.user} updateAuth={this.updateAuth} />
             <Switch>
               <PrivateRoute path='/test' component={Test} isAuthenticated={this.state.auth} />
-              <AdminRoute exact path='/adminpanel' component={AdminPanel} isAuthenticated={this.state.auth} role={this.state.user.role} />
               <AdminRoute exact path='/admin/users' component={UserTab} isAuthenticated={this.state.auth} role={this.state.user.role} />
               <AdminRoute exact path='/admin/addproduct' component={AddProductTab} isAuthenticated={this.state.auth} role={this.state.user.role} />
               <AdminRoute exact path='/admin/deleteproduct' component={DeleteProduct} isAuthenticated={this.state.auth} role={this.state.user.role} />
@@ -165,11 +163,13 @@ class App extends React.Component {
               <PrivateRoute exact path='/checkout' isAuthenticated={this.state.auth} component={Checkout} />
               <PrivateRoute exact path='/cart' isAuthenticated={this.state.auth} component={Cart} />
               <PrivateRoute exact path='/myorders' isAuthenticated={this.state.auth} component={MyOrders} />
-              {/* <Route exact path='/products/' component={Products} /> */}
               <Route exact path='/products' component={ProductsHome} />
               <Route exact path='/' component={Home} />
               <Route component={NotFound} />
             </Switch>
+            <div className={classes.footer}>
+
+            </div>
           </Router>
         </AuthProvider>
       </ThemeProvider>

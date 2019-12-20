@@ -1,13 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
-import { Container, Grid, CircularProgress, Typography, Button } from '@material-ui/core';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
+import { Container, Typography, Button, Table, TableBody, TableCell, TableHead, TableRow } from '@material-ui/core';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -22,11 +16,10 @@ const useStyles = makeStyles(theme => ({
 export default function Cart() {
     const classes = useStyles();
 
-    const [cart, setCart] = useState(JSON.parse(window.localStorage.getItem('cart')));
+    const [cart] = useState(JSON.parse(window.localStorage.getItem('cart')));
 
     let subtotal = 0;
     let tax = 0;
-    let total = 0;
 
     return (
         <Container>
@@ -97,7 +90,7 @@ export default function Cart() {
                 </>
 
                 :
-                <Typography align="center">
+                <Typography align="center" component="h1" variant="h5">
                     No items in cart
                 </Typography>
             }

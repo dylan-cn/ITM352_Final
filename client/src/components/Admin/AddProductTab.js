@@ -30,13 +30,13 @@ export default function AddProductTab() {
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState();
   const [message, setMessage] = useState();
-  const [file, setFile] = useState();
+  const [file, setFile] = useState(null);
   const [sizes, setSizes] = useState();
   const [buttons, setButtons] = useState([...sizeButtons]);
 
   // When uploaded file changes, update state
   function handleFileChange(e) {
-    setFile(e.target.files)
+    setFile(e.target.files);
   }
 
   // Remove Price inputs from list and ensure
@@ -173,7 +173,6 @@ export default function AddProductTab() {
     }
 
     // Form data to send to server for File Upload
-    console.log('file at: ')
     let data = new FormData();
     data.append('file', file[0]);
 
@@ -221,6 +220,8 @@ export default function AddProductTab() {
           // Reset the sizes buttons
           setSizes();
           setButtons([...sizeButtons]);
+          // Reset image upload
+          setFile(null);
         } else {
           setMessage(`Could not add product: ${json.messages}`);
         }
@@ -333,7 +334,7 @@ export default function AddProductTab() {
                 </React.Fragment>
               );
             })}
-            <Grid item xs={12}>
+            <Grid item xs={4}>
               <input
                 id='picture-upload'
                 accept="image/*"
@@ -343,10 +344,25 @@ export default function AddProductTab() {
               />
 
               <label htmlFor="picture-upload">
-                <Button component="span">
+                <Button
+                  component="span"
+                  type="button"
+                  fullWidth
+                  variant="contained"
+                  color="primary"
+                >
                   Upload Picture
                 </Button>
               </label>
+            </Grid>
+            <Grid item xs={8} style={{ margin: 'auto' }}>
+              {file !== null ?
+                <Typography>
+                  {file[0].name}
+                </Typography>
+                :
+                ''
+              }
             </Grid>
           </Grid>
           <div className={classes.wrapper}>
