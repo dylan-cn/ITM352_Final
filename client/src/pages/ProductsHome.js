@@ -10,12 +10,20 @@ import ProductCard from '../components/Product/ProductCard';
 import Typography from '@material-ui/core/Typography';
 import PropTypes from 'prop-types';
 import Container from '@material-ui/core/Container';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 const useStyles = makeStyles(theme => ({
     root: {
         flexGrow: 1,
         width: '100%',
         backgroundColor: theme.palette.background.paper,
+    },
+    spinner: {
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        marginTop: -32,
+        marginLeft: -32,
     },
 }));
 
@@ -82,7 +90,11 @@ export default function Tabss() {
                     </Tabs>
                 </AppBar>
 
-                {
+                {!errors && isLoading &&
+                    <CircularProgress size={64} className={classes.spinner} />
+                }
+
+                {!errors && !isLoading &&
                     categories.map((category, idx) => {
                         return (
                             <TabPanel value={value} index={idx} key={idx}>
@@ -108,6 +120,12 @@ export default function Tabss() {
                             </TabPanel>
                         )
                     })
+                }
+
+                {errors &&
+                    <Typography align="center" variant="h4" component="h2">
+                        {errors}
+                    </Typography>
                 }
             </Container>
         </Paper>
