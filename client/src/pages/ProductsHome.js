@@ -18,6 +18,15 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
+const categories = [
+    'All',
+    'Coffee',
+    'Tea',
+    'Specialty',
+    'Food',
+    'Catering'
+];
+
 export default function Tabss() {
     const classes = useStyles();
     const [value, setValue] = React.useState(0);
@@ -58,32 +67,46 @@ export default function Tabss() {
                 <Tabs
                     value={value}
                     onChange={handleChange}
-                    indicatorColor="primary"
+                    indicatorColor="secondary"
                     textColor="primary"
                     variant="scrollable"
                     scrollButtons="on"
                 >
-                    <Tab label="All" />
-                    <Tab label="Coffee" />
-                    <Tab label="Tea" />
-                    <Tab label="Specialty Beverages" />
-                    <Tab label="Food" />
-                    <Tab label="Catering" />
+                    {
+                        categories.map(item => {
+                            return <Tab key={item} label={item} />
+                        })
+                    }
                 </Tabs>
             </AppBar>
 
-            <TabPanel value={value} index={0}>
-                {products && <Grid container spacing={3}>
-                    {products.map((item, idx) => {
-                        return (
-                            <Grid item xs={6} md={4} key={idx + item}>
-                                <ProductCard productData={item} key={item._id} />
-                            </Grid>
-                        );
-                    })}
-                </Grid>}
-            </TabPanel>
-
+            {
+                categories.map((category, idx) => {
+                    return (
+                        <TabPanel value={value} index={idx} key={idx}>
+                            {products &&
+                                <Grid container spacing={3}>
+                                    {products
+                                        .filter(product => {
+                                            if (category.toLowerCase() === 'all') {
+                                                return true;
+                                            } else {
+                                                return product.category.toLowerCase() === category.toLowerCase();
+                                            }
+                                        })
+                                        .map((item, idx) => {
+                                            return (
+                                                <Grid item xs={6} md={4} key={idx + item}>
+                                                    <ProductCard productData={item} key={item._id} />
+                                                </Grid>
+                                            );
+                                        })}
+                                </Grid>
+                            }
+                        </TabPanel>
+                    )
+                })
+            }
         </Paper>
     );
 }
