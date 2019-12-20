@@ -1,5 +1,5 @@
 import React, { useState, } from 'react';
-import { Typography, Container, Button, Grid, TextField, FormControl, InputLabel, Select } from '@material-ui/core';
+import { Typography, Container, Button, Grid, TextField, FormControl, InputLabel, Select, CircularProgress } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import axios from 'axios';
 
@@ -13,12 +13,20 @@ const useStyles = makeStyles(theme => ({
   users: {
     marginTop: theme.spacing(4),
   },
-  wrapper: {
-    marginTop: theme.spacing(4)
-  },
   centerButton: {
     margin: 'auto',
-  }
+  },
+  spinner: {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    marginTop: -12,
+    marginLeft: -12,
+  },
+  wrapper: {
+    margin: theme.spacing(1),
+    position: 'relative',
+  },
 }));
 
 // Hold all sizes
@@ -28,7 +36,6 @@ export default function AddProductTab() {
   const classes = useStyles();
 
   const [loading, setLoading] = useState(false);
-  const [errors, setErrors] = useState();
   const [message, setMessage] = useState();
   const [file, setFile] = useState(null);
   const [sizes, setSizes] = useState();
@@ -36,7 +43,7 @@ export default function AddProductTab() {
 
   // When uploaded file changes, update state
   function handleFileChange(e) {
-    setFile(e.target.files);
+    setFile(e.target.files[0]);
   }
 
   // Remove Price inputs from list and ensure
@@ -154,8 +161,24 @@ export default function AddProductTab() {
     // Set loading state
     setLoading(true);
 
+    // Form
     let form = e.target;
 
+    // Ensure have a size
+    if (!sizes) {
+      setMessage('You must enter at least one price.');
+      setLoading(false);
+      return;
+    }
+
+    // Ensure a picture is uploaded
+    if (!file) {
+      setMessage('You must upload a picture.');
+      setLoading(false);
+      return;
+    }
+
+    // Get prices
     let prices = {};
     for (let element of sizes) {
       prices[element] = form[`${element}-price`].value;
@@ -174,7 +197,7 @@ export default function AddProductTab() {
 
     // Form data to send to server for File Upload
     let data = new FormData();
-    data.append('file', file[0]);
+    data.append('file', file);
 
     let resData = null;
     // Send request for file upload first
@@ -183,13 +206,15 @@ export default function AddProductTab() {
       const response = await axios.post('/api/upload', data, config);
       resData = response.data;
     } catch (err) {
-      console.log(err.response);
+      setMessage('Something went wrong trying to upload picture.');
       setLoading(false);
       setFile(null);
     }
 
     // file did not upload
     if (!resData) {
+      setLoading(false);
+      setFile(null);
       return;
     }
 
@@ -222,12 +247,21 @@ export default function AddProductTab() {
           setButtons([...sizeButtons]);
           // Reset image upload
           setFile(null);
+
+          // Send alert on success
+          alert(`${json.doc.name} successfully added!`)
         } else {
           setMessage(`Could not add product: ${json.messages}`);
+
+          // Send alert on error
+          alert(`Could not add product: ${json.messages}`);
         }
       })
       .catch(err => {
         setMessage(`Could not add product: ${err}`);
+
+        // Send alert on error
+        alert(`Could not add product: ${err}`);
       })
       .finally(() => {
         setLoading(false);
@@ -237,7 +271,7 @@ export default function AddProductTab() {
   return (
     <>
       <Typography align="center" component="h1" variant="h5">
-        This is the add product tab
+        Add product
       </Typography>
 
       <Container className={classes.users}>
@@ -356,9 +390,9 @@ export default function AddProductTab() {
               </label>
             </Grid>
             <Grid item xs={8} style={{ margin: 'auto' }}>
-              {file !== null ?
+              {file ?
                 <Typography>
-                  {file[0].name}
+                  {file.name}
                 </Typography>
                 :
                 ''
@@ -371,12 +405,16 @@ export default function AddProductTab() {
               fullWidth
               variant="contained"
               color="primary"
+              disabled={loading}
             >
               Add Product
             </Button>
+            {loading &&
+              <CircularProgress size={16} className={classes.spinner} />
+            }
           </div>
         </form>
-        <Typography>
+        <Typography align="center" component="h1" variant="h5">
           {message}
         </Typography>
       </Container>
