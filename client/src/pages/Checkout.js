@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Typography, Container, Button, Grid, TextField, FormControl, InputLabel, Select, Divider } from '@material-ui/core';
+import { Typography, Container, Button, Grid, TextField, FormControl, InputLabel, Select } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles(theme => ({
@@ -11,6 +11,7 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
+// Send order request to server
 function sendOrder(e) {
     e.preventDefault();
 
@@ -23,7 +24,7 @@ function sendOrder(e) {
         location: window.localStorage.getItem("location"),
     }
 
-    // send checkout request to server
+    // send to server
     fetch('/api/checkout', {
         method: 'POST',
         headers: {
@@ -41,18 +42,20 @@ function sendOrder(e) {
 
                 alert("You order has been sent");
             } else {
-                alert("There was an error");
+                alert("There was an error sending order");
             }
         })
         .catch(err => {
             alert("It seems there is a problem with the server, try again later");
         })
 }
+
 // Function for location
 function handleLocation(e) {
     window.localStorage.setItem("location", e.target.value)
 }
 
+// Locations
 const locations = {
     Kakaako: "685 Auahi St #113, Honolulu, HI 96813",
     Kailua: "600 Kailua Rd, Kailua, HI 96734"
@@ -60,6 +63,8 @@ const locations = {
 
 export default function Checkout() {
     const classes = useStyles();
+
+    // Set default location
     useEffect(() => {
         window.localStorage.setItem("location", Object.keys(locations)[0]);
     }, []);

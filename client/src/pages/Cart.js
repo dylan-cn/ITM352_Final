@@ -16,10 +16,20 @@ const useStyles = makeStyles(theme => ({
 export default function Cart() {
     const classes = useStyles();
 
-    const [cart] = useState(JSON.parse(window.localStorage.getItem('cart')));
+    const [cart, setCart] = useState(JSON.parse(window.localStorage.getItem('cart')));
 
     let subtotal = 0;
     let tax = 0;
+
+    // Remove an item from the cart
+    const handleRemove = (item) => {
+        let currCart = JSON.parse(window.localStorage.getItem('cart')).filter(product => {
+            return product.name !== item.name;
+        })
+
+        setCart(currCart);
+        window.localStorage.setItem('cart', JSON.stringify(currCart));
+    }
 
     return (
         <Container>
@@ -34,6 +44,7 @@ export default function Cart() {
                                     <TableCell align="right">Price</TableCell>
                                     <TableCell align="right">Qty</TableCell>
                                     <TableCell align="right">Total</TableCell>
+                                    <TableCell align="right">Remove</TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
@@ -51,6 +62,17 @@ export default function Cart() {
                                             <TableCell align="right">{item.price}</TableCell>
                                             <TableCell align="right">{item.quantity}</TableCell>
                                             <TableCell align="right">${+item.price * + item.quantity}</TableCell>
+                                            <TableCell align="right">
+                                                <Button
+                                                    variant="contained"
+                                                    fullWidth
+                                                    color="primary"
+                                                    type="button"
+                                                    onClick={() => handleRemove(item)}
+                                                >
+                                                    X
+                                                </Button>
+                                            </TableCell>
                                         </TableRow>
                                     )
                                 })}
