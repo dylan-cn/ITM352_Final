@@ -15,6 +15,8 @@ const useStyles = makeStyles(theme => ({
         marginTop: theme.spacing(4),
         width: '100%',
         overflowX: 'auto',
+        height: '65vh',
+        overflowY: 'auto',
     },
     search: {
         position: 'relative',

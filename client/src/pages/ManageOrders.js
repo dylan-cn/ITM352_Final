@@ -19,7 +19,9 @@ const useStyles = makeStyles(theme => ({
   table: {
     marginTop: theme.spacing(4),
     width: '100%',
+    height: '65vh',
     overflowX: 'auto',
+    overflowY: 'auto',
   },
 }));
 
@@ -68,7 +70,7 @@ export default function AlignItemsList() {
   }
 
   return (
-    <Container>
+    <Container className={classes.mainContainer}>
       <Grid container spacing={3}>
         <Grid item xs={12} sm={6}>
           <FormControl variant="filled" className={classes.formControl} fullWidth>
@@ -154,7 +156,7 @@ export default function AlignItemsList() {
   );
 }
 
-// Compenent to create the a user row in the user table 
+// Compenent to create the a order row in the order table 
 function OrderRow({ orderInfo }) {
   const classes = useStyles();
 
@@ -195,7 +197,7 @@ function OrderRow({ orderInfo }) {
       });
   }
 
-  // Component to return user row
+  // Component to return order row
   return (
     <TableRow>
       <TableCell align="center">{new Date(order.date).toString() || "N/A"}</TableCell>
