@@ -135,7 +135,7 @@ export default function DeleteProduct() {
                                         products
                                             .filter(elem => {
                                                 if (searchInput && searchInput.trim().length > 0) {
-                                                    return elem.username.toUpperCase().contains(searchInput.toUpperCase());
+                                                    return elem.name.toUpperCase().includes(searchInput.toUpperCase());
                                                 } else {
                                                     return true;
                                                 }

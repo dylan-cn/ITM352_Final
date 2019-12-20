@@ -173,6 +173,7 @@ export default function AddProductTab() {
     }
 
     // Form data to send to server for File Upload
+    console.log('file at: ')
     let data = new FormData();
     data.append('file', file[0]);
 
@@ -183,7 +184,7 @@ export default function AddProductTab() {
       const response = await axios.post('/api/upload', data, config);
       resData = response.data;
     } catch (err) {
-      console.log(err);
+      console.log(err.response);
       setLoading(false);
       setFile(null);
     }
