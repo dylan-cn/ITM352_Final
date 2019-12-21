@@ -32,6 +32,7 @@ export default function ProductCard({ productData }) {
     const [open, setOpen] = useState(false);
     const [prices] = useState(productData.prices);
     const [size, setSize] = useState(Object.keys(prices)[0]);
+    const [milk, setMilk] = useState(null);
 
     // Set open or close state for product modal
     const handleModal = () => {
@@ -41,6 +42,11 @@ export default function ProductCard({ productData }) {
     // Changes sizes and prices
     const handleSelectSize = (e) => {
         setSize(e.target.value);
+    }
+
+    // Changes milk option
+    const handleMilk = (e) => {
+        setMilk(e.target.value);
     }
 
     // Alert the user if adding item to cart was successful or not
@@ -71,7 +77,7 @@ export default function ProductCard({ productData }) {
             size,
             quantity,
             picture,
-            options: null
+            options: milk ? milk : null,
         };
 
         if (currCart) {
@@ -119,13 +125,7 @@ export default function ProductCard({ productData }) {
             // Create new cart
             const newCart = [];
             newCart.push(
-                {
-                    name: productData.name,
-                    price,
-                    size,
-                    quantity,
-                    picture
-                }
+                newItem
             );
 
             const type = productData.category.toLowerCase() === 'catering' ? 'catering' : 'all';
@@ -160,11 +160,14 @@ export default function ProductCard({ productData }) {
             </Card>
 
             <Modal
-                aria-labelledby="simple-modal-title"
-                aria-describedby="simple-modal-description"
+                aria-labelledby={productData.name}
+                aria-describedby={productData.description}
                 open={open}
                 onClose={handleModal}
-                style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                style={{
+                    display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'scroll',
+                    height: '100vh'
+                }}
                 elevation={0}
             >
                 <div className={classes.paper}>
@@ -185,13 +188,12 @@ export default function ProductCard({ productData }) {
                             </Typography>
 
                             <form onSubmit={addToCart}>
-                                <Grid container spacing={3}>
+                                <Grid container spacing={3} justify="center">
                                     <Grid item xs={6}>
                                         <FormControl variant="filled" className={classes.formControl} fullWidth>
                                             <InputLabel htmlFor="size-select">Size</InputLabel>
                                             <Select
                                                 native
-                                                // value={state.age}
                                                 onChange={handleSelectSize}
                                                 inputProps={{
                                                     name: 'size',
@@ -211,6 +213,29 @@ export default function ProductCard({ productData }) {
                                             Price: ${prices[size]}
                                         </Typography>
                                     </Grid>
+
+                                    {productData.category.toLowerCase() === 'coffee' &&
+                                        <Grid item xs={6}>
+                                            <FormControl variant="filled" className={classes.formControl} fullWidth>
+                                                <InputLabel htmlFor="milk-select">Milk Type</InputLabel>
+                                                <Select
+                                                    native
+                                                    onChange={handleMilk}
+                                                    inputProps={{
+                                                        name: 'milk',
+                                                        id: 'milk-select',
+                                                    }}
+                                                    style={{ height: 50 }}
+                                                >
+                                                    {['None', 'Regular', 'Soy', 'Almond'].map((value) => {
+                                                        return (
+                                                            <option value={value} key={value}>{value}</option>
+                                                        );
+                                                    })}
+                                                </Select>
+                                            </FormControl>
+                                        </Grid>
+                                    }
 
                                     <Grid item xs={6}>
                                         <TextField

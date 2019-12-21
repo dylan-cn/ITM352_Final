@@ -64,7 +64,15 @@ export default function Cart() {
                                     return (
                                         <TableRow key={item.name + item.price}>
                                             <TableCell component="th" scope="row">
-                                                {item.name}
+                                                <Typography noWrap>
+                                                    {item.name}
+                                                    {item.options &&
+                                                        <>
+                                                            <br />
+                                                            Milk: {item.options}
+                                                        </>
+                                                    }
+                                                </Typography>
                                             </TableCell>
                                             <TableCell align="right">{item.size}</TableCell>
                                             <TableCell align="right">{item.price}</TableCell>

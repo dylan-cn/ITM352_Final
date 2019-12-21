@@ -227,7 +227,17 @@ function OrderRow({ orderInfo }) {
                 <div key={item.picture + item.name + item.quantity + orderInfo.firstName + orderInfo.lastName}>
                   <ListItem alignItems="flex-start">
                     <ListItemText
-                      primary={item.name}
+                      primary={
+                        <Typography noWrap>
+                          {item.name}
+                          {item.options &&
+                            <>
+                              <br />
+                              Milk: {item.options}
+                            </>
+                          }
+                        </Typography>
+                      }
                       secondary={
                         <React.Fragment>
                           <Typography
