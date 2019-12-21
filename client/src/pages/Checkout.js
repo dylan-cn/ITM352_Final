@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Redirect } from 'react-router-dom';
 import { Typography, Container, Button, Grid, TextField, FormControl, InputLabel, Select, CircularProgress } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -32,6 +33,9 @@ export default function Checkout() {
     const classes = useStyles();
 
     const [loading, setLoading] = useState(false);
+    const [purchased, setPurchased] = useState(false);
+    const [timer, setTimer] = useState(null);
+    const [interval, setIntervalTime] = useState(null);
 
     // Set default location
     useEffect(() => {
@@ -78,6 +82,11 @@ export default function Checkout() {
             })
             .finally(() => {
                 setLoading(false);
+                setPurchased(true);
+                setTimer(5);
+                setIntervalTime(setInterval(function () {
+                    setTimer(prevState => prevState -= 1)
+                }, 1000));
             })
     }
 
@@ -88,6 +97,24 @@ export default function Checkout() {
 
     const temp = JSON.parse(window.localStorage.getItem('cart'));
     const cart = temp ? temp.cart : null;
+
+    // If purchase is submitted, redirect to products page
+    if (purchased) {
+        // When timer is up, redirect
+        if (timer && timer <= 0) {
+            clearInterval(interval);
+            return (<Redirect to={{ pathname: '/products' }} />);
+        }
+
+        // Else display redirect confirmation
+        return (
+            <Typography align='center'>
+                Thank you for making your purchase
+                <br />
+                You will be redirected to products in {timer} seconds
+            </Typography>
+        );
+    }
 
     return (
         <Container className={classes.paper} component="main">
