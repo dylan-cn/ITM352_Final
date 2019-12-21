@@ -5,7 +5,7 @@ const User = require('../../models/User');
 
 // Route to checkout
 router.post('/', async (req, res) => {
-    const { order, location } = req.body;
+    const { order, location, selectedDate } = req.body;
 
     // Get user from id
     User
@@ -21,6 +21,7 @@ router.post('/', async (req, res) => {
                 phoneNumber,
                 order,
                 location,
+                pickup: selectedDate
             });
 
             // save order into database

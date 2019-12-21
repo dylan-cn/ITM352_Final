@@ -119,6 +119,7 @@ export default function AlignItemsList() {
           <TableHead>
             <TableRow>
               <TableCell align="center">Date</TableCell>
+              <TableCell align="center">Pickup</TableCell>
               <TableCell align="center">Status</TableCell>
               <TableCell align="center">Location</TableCell>
               <TableCell align="center">Order</TableCell>
@@ -201,6 +202,7 @@ function OrderRow({ orderInfo }) {
   return (
     <TableRow>
       <TableCell align="center">{new Date(order.date).toString() || "N/A"}</TableCell>
+      <TableCell align="center">{order.pickup ? new Date(order.pickup).toString() : 'N/A'}</TableCell>
       <TableCell align="center">
         {loading && <CircularProgress size={24} />}
 
