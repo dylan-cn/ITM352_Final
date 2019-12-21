@@ -73,7 +73,6 @@ export default function Cart() {
                                             <TableCell align="center">
                                                 <Button
                                                     variant="contained"
-                                                    fullWidth
                                                     color="primary"
                                                     type="button"
                                                     onClick={() => handleRemove(item)}

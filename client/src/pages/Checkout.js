@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Redirect } from 'react-router-dom';
+import { MuiPickersUtilsProvider } from '@material-ui/pickers';
+import MomentUtils from '@date-io/moment';
+import { DateTimePicker } from "@material-ui/pickers";
 import { Typography, Container, Button, Grid, TextField, FormControl, InputLabel, Select, CircularProgress } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -36,6 +39,7 @@ export default function Checkout() {
     const [purchased, setPurchased] = useState(false);
     const [timer, setTimer] = useState(null);
     const [interval, setIntervalTime] = useState(null);
+    const [selectedDate, handleDateChange] = useState(null);
 
     // Set default location
     useEffect(() => {
@@ -54,6 +58,7 @@ export default function Checkout() {
             id,
             order,
             location: window.localStorage.getItem("location"),
+            selectedDate,
         }
 
         // send to server
@@ -117,110 +122,125 @@ export default function Checkout() {
     }
 
     return (
-        <Container className={classes.paper} component="main">
-            <Typography component="h1" variant="h5">
-                Checkout
+        <MuiPickersUtilsProvider utils={MomentUtils}>
+            <Container className={classes.paper} component="main">
+                <Typography component="h1" variant="h5">
+                    Checkout
             </Typography>
-            <Typography>
-                Mockup checkout; no functionality
+                <Typography>
+                    Mockup checkout; no functionality
             </Typography>
-            {cart && cart.length > 0 ?
-                <form onSubmit={sendOrder}>
-                    <Grid container spacing={2}>
-                        <Grid item xs={12}>
-                            <TextField
-                                autoComplete="name"
-                                name="name"
-                                variant="outlined"
-                                required
-                                fullWidth
-                                id="name"
-                                label="Name"
-                                autoFocus
-                            />
+                {cart && cart.length > 0 ?
+                    <form onSubmit={sendOrder}>
+                        <Grid container spacing={2}>
+                            <Grid item xs={12}>
+                                <TextField
+                                    autoComplete="name"
+                                    name="name"
+                                    variant="outlined"
+                                    required
+                                    fullWidth
+                                    id="name"
+                                    label="Name"
+                                    autoFocus
+                                />
+                            </Grid>
+                            <Grid item xs={12}>
+                                <FormControl variant="filled" className={classes.formControl} fullWidth>
+                                    <InputLabel htmlFor="size-select">Pick Up Location</InputLabel>
+                                    <Select
+                                        native
+                                        onChange={handleLocation}
+                                        inputProps={{
+                                            name: 'location',
+                                            id: 'location-select',
+                                        }}
+                                        style={{ height: 50 }}
+                                    >
+                                        {Object.entries(locations).map(([key, value]) => {
+                                            return (
+                                                <option value={key} key={value + key}>{value}</option>
+                                            );
+                                        })}
+                                    </Select>
+                                </FormControl>
+                            </Grid>
+                            {JSON.parse(window.localStorage.getItem('cart')).type === 'catering' &&
+                                <Grid item xs={12}>
+                                    <DateTimePicker
+                                        value={selectedDate}
+                                        disablePast
+                                        fullWidth
+                                        inputVariant="outlined"
+                                        onChange={handleDateChange}
+                                        label="Pickup time"
+                                        minDate={new Date().setDate(new Date().getDate() + 2)}
+                                    />
+                                </Grid>
+                            }
+                            <Grid item xs={12}>
+                                <TextField
+                                    variant="outlined"
+                                    required
+                                    fullWidth
+                                    id="address"
+                                    label="Address"
+                                    name="address"
+                                    autoComplete="address"
+                                />
+                            </Grid>
+                            <Grid item xs={12} md={8}>
+                                <TextField
+                                    variant="outlined"
+                                    required
+                                    fullWidth
+                                    id="card"
+                                    label="Card Number"
+                                    name="card"
+                                    autoComplete="card"
+                                />
+                            </Grid>
+                            <Grid item xs={6} md={2}>
+                                <TextField
+                                    variant="outlined"
+                                    required
+                                    fullWidth
+                                    id="expiration-date"
+                                    label="Expiration Date"
+                                    name="expiration-date"
+                                    autoComplete="expiration-date"
+                                />
+                            </Grid>
+                            <Grid item xs={6} md={2}>
+                                <TextField
+                                    variant="outlined"
+                                    required
+                                    fullWidth
+                                    id="security"
+                                    label="Security Code"
+                                    name="security"
+                                    autoComplete="code"
+                                />
+                            </Grid>
                         </Grid>
-                        <Grid item xs={12}>
-                            <FormControl variant="filled" className={classes.formControl} fullWidth>
-                                <InputLabel htmlFor="size-select">Pick Up Location</InputLabel>
-                                <Select
-                                    native
-                                    onChange={handleLocation}
-                                    inputProps={{
-                                        name: 'location',
-                                        id: 'location-select',
-                                    }}
-                                    style={{ height: 50 }}
-                                >
-                                    {Object.entries(locations).map(([key, value]) => {
-                                        return (
-                                            <option value={key} key={value + key}>{value}</option>
-                                        );
-                                    })}
-                                </Select>
-                            </FormControl>
-                        </Grid>
-                        <Grid item xs={12}>
-                            <TextField
-                                variant="outlined"
-                                required
-                                fullWidth
-                                id="address"
-                                label="Address"
-                                name="address"
-                                autoComplete="address"
-                            />
-                        </Grid>
-                        <Grid item xs={12} md={8}>
-                            <TextField
-                                variant="outlined"
-                                required
-                                fullWidth
-                                id="card"
-                                label="Card Number"
-                                name="card"
-                                autoComplete="card"
-                            />
-                        </Grid>
-                        <Grid item xs={6} md={2}>
-                            <TextField
-                                variant="outlined"
-                                required
-                                fullWidth
-                                id="expiration-date"
-                                label="Expiration Date"
-                                name="expiration-date"
-                                autoComplete="expiration-date"
-                            />
-                        </Grid>
-                        <Grid item xs={6} md={2}>
-                            <TextField
-                                variant="outlined"
-                                required
-                                fullWidth
-                                id="security"
-                                label="Security Code"
-                                name="security"
-                                autoComplete="code"
-                            />
-                        </Grid>
-                    </Grid>
 
-                    <br />
-                    <Button variant="contained" type="submit" className={classes.wrapper} disabled={loading} style={{ float: 'right' }}>
-                        Submit order
+                        <br />
+                        <Button variant="contained" type="submit" className={classes.wrapper} disabled={loading} style={{ float: 'right' }}>
+                            Submit order
                         {loading &&
-                            <CircularProgress size={16} className={classes.spinner} />
-                        }
-                    </Button>
-                </form>
-                :
-                <>
-                    <br />
-                    <Typography component="h1" variant="h5">
-                        No items in cart!
+                                <CircularProgress size={16} className={classes.spinner} />
+                            }
+                        </Button>
+                    </form>
+                    :
+                    <>
+                        <br />
+                        <Typography component="h1" variant="h5">
+                            No items in cart!
                     </Typography>
-                </>
-            }
-        </Container>
+                    </>
+                }
+            </Container>
+        </MuiPickersUtilsProvider>
     );
 }
