@@ -164,8 +164,10 @@ export default function ProductCard({ productData }) {
                 aria-describedby={productData.description}
                 open={open}
                 onClose={handleModal}
-                style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', overflow:'scroll',
-                height:'100%' }}
+                style={{
+                    display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'scroll',
+                    height: '100vh'
+                }}
                 elevation={0}
             >
                 <div className={classes.paper}>
@@ -225,7 +227,7 @@ export default function ProductCard({ productData }) {
                                                     }}
                                                     style={{ height: 50 }}
                                                 >
-                                                    {['None', 'Regular', 'Soy', 'Almond' ].map((value) => {
+                                                    {['None', 'Regular', 'Soy', 'Almond'].map((value) => {
                                                         return (
                                                             <option value={value} key={value}>{value}</option>
                                                         );
