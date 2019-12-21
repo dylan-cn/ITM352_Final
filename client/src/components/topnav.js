@@ -160,7 +160,7 @@ export default function TopNav({ isAuth, user, updateAuth }) {
                     </ListItem>
                 </List>
 
-                {user.role &&
+                {isAuth &&
                     <>
                         <Divider />
                         <ListItem button component={Link} to='/myorders'>

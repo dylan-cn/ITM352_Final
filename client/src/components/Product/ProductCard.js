@@ -153,7 +153,8 @@ export default function ProductCard({ productData }) {
                             {productData.name}
                         </Typography>
                         <Typography variant="body2" color="textSecondary" component="p">
-                            {productData.description}
+                            ${Object.entries(productData.prices)[0][1]
+                            }
                         </Typography>
                     </CardContent>
                 </CardActionArea>

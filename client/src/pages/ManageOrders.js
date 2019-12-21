@@ -69,6 +69,17 @@ export default function AlignItemsList() {
     setLocation(e.target.value);
   }
 
+  function updateOrders(order) {
+    let currOrders = orders;
+    let idx = currOrders.findIndex(item => {
+      return item._id === order._id;
+    })
+
+    currOrders[idx] = order;
+
+    setOrders(currOrders);
+  }
+
   return (
     <Container className={classes.mainContainer}>
       <Grid container spacing={3}>
@@ -148,7 +159,7 @@ export default function AlignItemsList() {
                   }
                 })
                 .map(order => (
-                  <OrderRow key={order._id} orderInfo={order} />
+                  <OrderRow key={order._id} orderInfo={order} updateOrders={updateOrders} />
                 ))}
           </TableBody>
         </Table>
@@ -158,12 +169,11 @@ export default function AlignItemsList() {
 }
 
 // Compenent to create the a order row in the order table 
-function OrderRow({ orderInfo }) {
+function OrderRow({ orderInfo, updateOrders }) {
   const classes = useStyles();
 
   const [order, setOrder] = useState({ ...orderInfo });
   const [loading, setLoading] = useState(false);
-  //const [errors, setErrors] = useState();
 
   // Sets the status of an order
   const setStatus = (status) => (event) => {
@@ -184,6 +194,7 @@ function OrderRow({ orderInfo }) {
         // Updated status was a success
         if (json.success) {
           setOrder(json.order);
+          updateOrders(json.order);
         } else {
           //setErrors('Could not update order record');
           alert('Could not update order status record');
