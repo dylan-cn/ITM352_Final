@@ -37,6 +37,7 @@ export default function AlignItemsList() {
   const [status, setStatus] = useState("all");
   const [location, setLocation] = useState("all");
 
+  // Fetch all orders on load
   useEffect(() => {
     fetch('/api/orders', {
       method: 'GET',
@@ -61,10 +62,12 @@ export default function AlignItemsList() {
       });
   }, []);
 
+  // Update status filter
   function handleStatusFilter(e) {
     setStatus(e.target.value);
   }
 
+  // Update location filter
   function handleLocationFilter(e) {
     setLocation(e.target.value);
   }
@@ -77,7 +80,6 @@ export default function AlignItemsList() {
             <InputLabel htmlFor="status-select">Status</InputLabel>
             <Select
               native
-              // value={state.age}
               onChange={handleStatusFilter}
               inputProps={{
                 name: 'status',
@@ -96,7 +98,6 @@ export default function AlignItemsList() {
             <InputLabel htmlFor="status-select">Location</InputLabel>
             <Select
               native
-              // value={state.age}
               onChange={handleLocationFilter}
               inputProps={{
                 name: 'location',

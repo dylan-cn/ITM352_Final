@@ -37,6 +37,7 @@ export default function AlignItemsList() {
     const [status, setStatus] = useState("all");
     const [location, setLocation] = useState("all");
 
+    // get user orders on load
     useEffect(() => {
         fetch('/api/orders/userorders', {
             method: 'GET',
@@ -51,20 +52,24 @@ export default function AlignItemsList() {
                     setOrders(json.orders);
                 } else {
                     //setErrors('Could not retrieve products from database...');
+                    alert('Could not retrieve products from database...');
                 }
             })
             .catch(err => {
                 //setErrors('Could not retrieve products from database...');
+                alert('Could not retrieve products from database...');
             })
             .finally(() => {
                 //setIsLoading(false);
             });
     }, []);
 
+    // Update status filter
     function handleStatusFilter(e) {
         setStatus(e.target.value);
     }
 
+    // Update location filter
     function handleLocationFilter(e) {
         setLocation(e.target.value);
     }

@@ -11,7 +11,7 @@ const useStyles = makeStyles(theme => ({
     alignItems: 'center',
   },
   form: {
-    
+
     width: '100%', // Fix IE 11 issue.
     marginTop: theme.spacing(3),
   },
@@ -38,38 +38,6 @@ export default function Register({ updateAuth }) {
   const [isLoading, setIsLoading] = useState(false);
   const [messages, setMessages] = useState({});
   const [success, setSuccess] = useState(false);
-  // const [redirect, setRedirect] = useState(5);
-  // const [loadingUser, setLoadingUser] = useState(false);
-  // const [firstNameError, setFirstNameError] = useState('');
-  // const [lastNameError, setLastNameError] = useState('');
-  // const [username, setUsernameError] = useState('');
-  // const [email, setEmailError] = useState('');
-  // const [password, setPasswordError] = useState('');
-
-  // const amtOfTime = 5000;
-  // function setDelay(startTime) {
-  //   var x = setInterval(function () {
-
-  //     // Get current time in ms
-  //     var now = new Date().getTime();
-
-  //     // Get the difference between now and startTime
-  //     var timeElapsed = now - startTime.getTime();
-
-  //     // Time calculations for seconds
-  //     var seconds = Math.floor((timeElapsed % (1000 * 60)) / 1000);
-
-  //     // Timer
-  //     let secondsLeft = Math.max((amtOfTime / 1000) - seconds, 0);
-
-  //     setRedirect(secondsLeft);
-  //     // check 5000 ms countdown
-  //     // send back to homepage when done counting
-  //     if (timeElapsed >= amtOfTime) {
-  //       clearInterval(x);
-  //     }
-  //   }, 1000);
-  // }
 
   // Send post to register user
   async function sendRegisterRequest(e) {
@@ -195,7 +163,7 @@ export default function Register({ updateAuth }) {
                 />
               </Grid>
               <Grid item xs={12}>
-              <TextField
+                <TextField
                   variant="outlined"
                   required
                   fullWidth

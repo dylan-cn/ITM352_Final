@@ -21,10 +21,13 @@ router.post('/login', (req, res) => {
     let success = false;
     let messages = [];
 
-    // Username and email are unique... so find if any
-    // of thos exist in database
-    User.findOne({ username })
+    // create case insensitive regex search
+    const unRegex = new RegExp(["^", username, "$"].join(""), "i");
+
+    // Find username case insensitive in database
+    User.findOne({ username: unRegex })
         .then(existingUser => {
+            // Does not exist in database
             if (!existingUser) {
                 return res.status(400).json({
                     success,
@@ -144,7 +147,7 @@ router.post('/register', (req, res) => {
                 }
 
                 if (!validatePhoneNumber(phoneNumber)) {
-                    messages.phoneNumber =  'Phone Number is invalid'
+                    messages.phoneNumber = 'Phone Number is invalid'
                 }
 
                 // If object is empty at this point, then there were no errors
@@ -198,7 +201,7 @@ router.post('/register', (req, res) => {
                     return res.status(500).json({
                         success,
                         messages: {
-                            general: 'Catastrophic error trying to save account to database' 
+                            general: 'Catastrophic error trying to save account to database'
                         }
                     });
                 });
@@ -213,7 +216,7 @@ router.post('/register', (req, res) => {
             return res.status(500).json({
                 success,
                 messages: {
-                    general: 'Catastrophic error trying to create account' 
+                    general: 'Catastrophic error trying to create account'
                 }
             });
         });

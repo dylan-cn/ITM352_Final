@@ -48,7 +48,7 @@ export default function Tabss() {
     const [errors, setErrors] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
 
-    // Fetches products from data base
+    // Fetches products from data base on load
     useEffect(() => {
         fetch('/api/products', {
             method: 'GET',
@@ -132,6 +132,7 @@ export default function Tabss() {
     );
 }
 
+// Panels for tab
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
 
